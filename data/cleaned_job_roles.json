@@ -1,0 +1,56 @@
+[
+  {
+    "job_role":"Data Analyst",
+    "required_skills":[
+      "python",
+      "sql",
+      "excel",
+      "statistics"
+    ],
+    "optional_skills":[
+      "power bi",
+      "tableau"
+    ],
+    "experience_level":"Fresher"
+  },
+  {
+    "job_role":"ML Engineer",
+    "required_skills":[
+      "python",
+      "machine learning",
+      "statistics"
+    ],
+    "optional_skills":[
+      "deep learning",
+      "nlp"
+    ],
+    "experience_level":"Junior"
+  },
+  {
+    "job_role":"Business Analyst",
+    "required_skills":[
+      "excel",
+      "communication",
+      "sql"
+    ],
+    "optional_skills":[
+      "power bi",
+      "statistics"
+    ],
+    "experience_level":"Fresher"
+  },
+  {
+    "job_role":"Data Scientist",
+    "required_skills":[
+      "python",
+      "machine learning",
+      "statistics",
+      "sql"
+    ],
+    "optional_skills":[
+      "deep learning",
+      "nlp"
+    ],
+    "experience_level":"Junior"
+  }
+]

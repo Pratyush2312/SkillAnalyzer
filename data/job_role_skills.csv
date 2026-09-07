@@ -1,0 +1,5 @@
+"job_role,required_skills,optional_skills,experience_level"
+"Data Analyst,python|sql|excel|statistics,power bi|tableau,Fresher"
+"ML Engineer,python|machine learning|statistics,deep learning|nlp,Junior"
+"Business Analyst,excel|communication|sql,power bi|statistics,Fresher"
+"Data Scientist,python|ml|statistics|sql,deep learning|nlp,Junior"
