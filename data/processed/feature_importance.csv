@@ -1,0 +1,73 @@
+feature,importance
+programming_language_r,0.037330484030431176
+soft_skill_critical thinking,0.028379811502279542
+course_MBA,0.027302021365714503
+technical_skill_tableau,0.02343625595753856
+soft_skill_rating,0.0227017764166486
+soft_skill_creativity,0.02193934040676466
+year,0.021905973749487506
+project_count,0.02172787223061333
+technical_skill_cybersecurity,0.021452027383338738
+soft_skill_adaptability,0.021167982696570435
+technical_skill_penetration testing,0.0205161293403276
+technical_skill_computer vision,0.020511271135900348
+technical_rating,0.020419256280944348
+technical_skill_excel,0.019600668885779524
+soft_skill_analytical thinking,0.019276969857308836
+soft_skill_teamwork,0.01870717303898034
+soft_skill_communication,0.0178356909619233
+technical_skill_power bi,0.017422032528191925
+technical_skill_tensorflow,0.017194801444596113
+programming_language_javascript,0.017135390553753432
+programming_language_java,0.016130338530707833
+course_B.Tech Cybersecurity,0.01593827777845473
+technical_skill_networking,0.01592960029995895
+soft_skill_leadership,0.015865053717650904
+programming_language_c++,0.015853865988109395
+technical_skill_sql,0.015764927252852133
+technical_skill_r,0.015664113619525525
+technical_skill_linux,0.015579444147977697
+technical_skill_statistics,0.015192310419101586
+technical_skill_cloud computing,0.014760192959920627
+technical_skill_data analysis,0.014337618400148078
+technical_skill_google cloud,0.014255248795669494
+technical_skill_pytorch,0.014144091369524757
+technical_skill_deep learning,0.014004223923722024
+technical_skill_devops,0.013549112141808598
+technical_skill_blockchain,0.013545365729661096
+technical_skill_python,0.013470880315779943
+programming_language_python,0.012742023308088681
+technical_skill_docker,0.012615754858717208
+technical_skill_kubernetes,0.01253403063967501
+technical_skill_machine learning,0.011636038127021815
+technical_skill_system design,0.01146883423545302
+technical_skill_data visualization,0.011431547999205696
+technical_skill_aws,0.011429133803723008
+technical_skill_ethical hacking,0.011202458393115535
+soft_skill_problem-solving,0.010995453039109288
+course_BBA,0.010919846421730172
+technical_skill_java,0.010272216606242156
+technical_skill_cryptography,0.010158681184363581
+technical_skill_c++,0.009716007371187545
+technical_skill_node.js,0.009703777426454402
+programming_language_go,0.009632557991425273
+technical_skill_azure,0.009462968799678877
+programming_language_c#,0.009304652604643002
+technical_skill_nlp,0.009210847824429198
+soft_skill_presentation,0.009039708603663573
+technical_skill_mongodb,0.008716822428562093
+projects,0.0079522776161718
+technical_skill_css,0.00784298577893663
+technical_skill_html,0.007726392241975491
+course_B.Tech AI & Data Science,0.007661530326643548
+technical_skill_react,0.007609734740498461
+technical_skill_javascript,0.007364709744073057
+technical_skill_git,0.007037625205151265
+course_B.Tech Computer Science,0.006791159808132678
+technical_skill_c#,0.006447700998847748
+course_B.Tech Information Technology,0.006107218090988253
+course_B.Sc Data Science,0.005881895155233122
+course_MCA,0.00505523431727572
+course_BCA,0.004858185817800495
+soft_skill_time management,0.004837830981352564
+course_B.Sc Computer Science,0.0046845623527639714

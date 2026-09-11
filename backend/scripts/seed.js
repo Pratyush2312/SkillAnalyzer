@@ -35,10 +35,10 @@ const seedDatabase = async () => {
         console.log("Old data cleared");
      
 
-        await Student.insertMany(students);
+        // await Student.insertMany(students);
 
 
-        await JobRole.insertMany(jobRoles);
+        // await JobRole.insertMany(jobRoles);
 
         console.log(`${students.length} students inserted`);
         console.log(`${jobRoles.length} job roles inserted`);
