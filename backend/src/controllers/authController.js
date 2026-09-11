@@ -23,8 +23,10 @@ export const register = async (req, res) => {
             id: user._id
         }, process.env.JWT_SECRET);
         res.cookie("token", token, {
-            httpOnly:true
-        })
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+        });
         return res.status(201).json({
             message: "User Logged In",
             token
@@ -61,6 +63,11 @@ export const login = async (req, res) => {
         let token = jwt.sign({
             id: user._id
         }, process.env.JWT_SECRET);
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+        });
         return res.status(201).json({
             message: "User Logged In",
             token
