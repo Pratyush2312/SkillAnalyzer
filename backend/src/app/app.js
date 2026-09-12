@@ -14,4 +14,4 @@ app.use(cors({
 app.use(cookieParser())
 app.use('/auth', authRoute);
 app.use("/api/student", studentRoute);
-app.use('/match', matchingRoute);
+app.use('/career', matchingRoute);

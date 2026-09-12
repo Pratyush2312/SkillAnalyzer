@@ -14,12 +14,12 @@ const seedDatabase = async () => {
         
         console.log("MongoDB connected");
 
-        const students = JSON.parse(
-            fs.readFileSync(
-                "C:\\Users\\PRATYUSH\\Desktop\\Coding\\SIH\\data\\cleaned_students.json",
-                "utf-8"
-            )
-        );
+        // const students = JSON.parse(
+        //     fs.readFileSync(
+        //         "C:\\Users\\PRATYUSH\\Desktop\\Coding\\SIH\\data\\cleaned_students.json",
+        //         "utf-8"
+        //     )
+        // );
 
         const jobRoles = JSON.parse(
             fs.readFileSync(
@@ -29,18 +29,18 @@ const seedDatabase = async () => {
         );
 
   
-        await Student.deleteMany({});
-        await JobRole.deleteMany({});
+        // await Student.deleteMany({});
+        // await JobRole.deleteMany({});
 
-        console.log("Old data cleared");
+        // console.log("Old data cleared");
      
 
         // await Student.insertMany(students);
 
 
-        // await JobRole.insertMany(jobRoles);
+        await JobRole.insertMany(jobRoles);
 
-        console.log(`${students.length} students inserted`);
+        // console.log(`${students.length} students inserted`);
         console.log(`${jobRoles.length} job roles inserted`);
 
         

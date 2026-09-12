@@ -53,7 +53,6 @@ export const createProfile = async (req, res) => {
 export const getProfile = async (req, res) => {
     try {
         const id = req.user._id;
-        console.log(id);
         if (!id) {
             return res.status(401).json({
                 message: "Invalid Student"
@@ -68,5 +67,22 @@ export const getProfile = async (req, res) => {
         })
     } catch (error) {
         console.log(error)
+    }
+}
+
+export const updateProfile = async (req, res) => { 
+    try {
+        const id = req.user._id;
+        const body = req.body;
+        console.log(body);
+        await Student.findOneAndUpdate({ user: id }, body);
+        return res.status(200).json({
+            message:"Details Updated"
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message:"Internal Server Error"
+        })
     }
 }
