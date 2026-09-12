@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from "react";
+import React, { useContext } from "react";
 import {
   ArrowUpRight,
   BriefcaseBusiness,
@@ -11,26 +11,40 @@ import {
   Target,
   TrendingUp,
 } from "lucide-react";
-import { data, useOutletContext } from "react-router";
-import { api } from "../../../config/api";
+import { useNavigate } from "react-router";
+import { CareerContext } from "../../../context/MyCareer";
 
 const Dashboard = () => {
-  const [student, setStudent] = useState([]);
-  useEffect(() => { 
-    async function fetchStudent() {
-      const res = await api.get('/api/student/profile/get');
-      setStudent(res.data.data);
-    }
-    fetchStudent();
-  }, [])
+  const { student, loading } = useContext(CareerContext);
 
   function capitalizeWord(word) {
-    return word.charAt(0).toUpperCase() + word.slice(1);
+    if (!word || typeof word !== "string") {
+      return "Not available";
+    }
+
+    return word
+      .split(" ")
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(" ");
   }
+
+  function getYearLabel(year) {
+    const numericYear = Number(year);
+
+    if (!Number.isFinite(numericYear)) {
+      return "Not available";
+    }
+
+    if (numericYear === 1) return "1st year";
+    if (numericYear === 2) return "2nd year";
+    if (numericYear === 3) return "3rd year";
+
+    return `${numericYear}th year`;
+  }
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-[#f8fafc]">
       <main className="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-10">
-        {/* Header */}
         <section className="flex flex-col justify-between gap-5 border-b border-slate-200 pb-8 sm:flex-row sm:items-end">
           <div>
             <p className="mb-3 text-sm font-medium text-indigo-600">
@@ -38,7 +52,7 @@ const Dashboard = () => {
             </p>
 
             <h1 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
-              Welcome back, {student.name}.
+              Welcome back, {student?.name || "there"}.
             </h1>
 
             <p className="mt-3 max-w-xl text-sm leading-6 text-slate-500">
@@ -48,6 +62,7 @@ const Dashboard = () => {
           </div>
 
           <button
+            onClick={() => navigate("/dashboard/edit-profile")}
             type="button"
             className="inline-flex w-fit items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-indigo-400 hover:text-indigo-600">
             <Pencil size={15} />
@@ -55,46 +70,7 @@ const Dashboard = () => {
           </button>
         </section>
 
-        {/* Profile Completion */}
-        <section className="mt-8 border border-slate-200 bg-white p-6 sm:p-7">
-          <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-start">
-            <div>
-              <p className="text-sm font-semibold text-slate-900">
-                Profile completion
-              </p>
-
-              <p className="mt-2 max-w-lg text-sm leading-6 text-slate-500">
-                Complete your remaining profile details to get more accurate
-                career recommendations.
-              </p>
-            </div>
-
-            <p className="text-3xl font-semibold tracking-tight text-slate-950">
-              75%
-            </p>
-          </div>
-
-          <div className="mt-6 h-2 w-full bg-slate-100">
-            <div className="h-full w-3/4 bg-indigo-600" />
-          </div>
-
-          <div className="mt-4 flex items-center justify-between">
-            <p className="text-xs text-slate-400">
-              3 of 4 profile sections completed
-            </p>
-
-            <button
-              type="button"
-              className="text-sm font-medium text-indigo-600 transition hover:text-indigo-700">
-              Complete now
-              <span className="ml-1">→</span>
-            </button>
-          </div>
-        </section>
-
-        {/* Main Overview */}
         <section className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-          {/* Career Direction */}
           <div className="border border-slate-200 bg-white p-6 sm:p-7">
             <div className="flex items-start justify-between">
               <div>
@@ -118,7 +94,7 @@ const Dashboard = () => {
               </p>
 
               <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950">
-                {student?.career_interest}
+                {student?.career_interest || "Not available"}
               </h2>
 
               <p className="mt-3 max-w-md text-sm leading-6 text-slate-500">
@@ -128,6 +104,7 @@ const Dashboard = () => {
             </div>
 
             <button
+              onClick={() => navigate("/dashboard/career-recommendations")}
               type="button"
               className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 transition hover:text-indigo-700">
               View career recommendations
@@ -135,7 +112,6 @@ const Dashboard = () => {
             </button>
           </div>
 
-          {/* Skill Overview */}
           <div className="border border-slate-200 bg-white p-6 sm:p-7">
             <div className="flex items-start justify-between">
               <div>
@@ -188,6 +164,7 @@ const Dashboard = () => {
             </div>
 
             <button
+              onClick={() => navigate("/dashboard/skill-overview")}
               type="button"
               className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 transition hover:text-indigo-700">
               Analyze my skills
@@ -208,8 +185,9 @@ const Dashboard = () => {
             </p>
           </div>
 
-          <div className="grid border border-slate-200 bg-white sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid border border-slate-200 bg-white sm:grid-cols-2 lg:grid-cols-3">
             <button
+              onClick={() => navigate("/dashboard/skill-overview")}
               type="button"
               className="group border-b border-slate-200 p-5 text-left transition hover:bg-slate-50 sm:border-r lg:border-b-0">
               <ClipboardCheck
@@ -233,6 +211,7 @@ const Dashboard = () => {
             </button>
 
             <button
+              onClick={() => navigate("/dashboard/career-recommendations")}
               type="button"
               className="group border-b border-slate-200 p-5 text-left transition hover:bg-slate-50 lg:border-b-0 lg:border-r">
               <GraduationCap
@@ -256,6 +235,7 @@ const Dashboard = () => {
             </button>
 
             <button
+              onClick={() => navigate("/dashboard/skill-gap")}
               type="button"
               className="group border-b border-slate-200 p-5 text-left transition hover:bg-slate-50 sm:border-r lg:border-b-0">
               <Target size={22} strokeWidth={1.8} className="text-indigo-600" />
@@ -274,7 +254,7 @@ const Dashboard = () => {
               />
             </button>
 
-            <button
+            {/* <button
               type="button"
               className="group p-5 text-left transition hover:bg-slate-50">
               <BriefcaseBusiness
@@ -284,7 +264,7 @@ const Dashboard = () => {
               />
 
               <h3 className="mt-5 text-sm font-semibold text-slate-900">
-                Job recommendations
+                Career recommendations
               </h3>
 
               <p className="mt-2 text-sm leading-5 text-slate-500">
@@ -295,7 +275,7 @@ const Dashboard = () => {
                 size={17}
                 className="mt-5 text-slate-400 transition group-hover:translate-x-1 group-hover:text-indigo-600"
               />
-            </button>
+            </button> */}
           </div>
         </section>
 
@@ -315,7 +295,7 @@ const Dashboard = () => {
             </div>
 
             <p className="mt-5 text-base font-medium text-slate-900">
-              Review your skill gaps for Full Stack Development.
+              Review your skill gaps for {student.career_interest}.
             </p>
 
             <p className="mt-2 text-sm leading-6 text-slate-500">
@@ -348,23 +328,21 @@ const Dashboard = () => {
               <div className="flex justify-between gap-4">
                 <span className="text-slate-500">Academic year</span>
                 <span className="font-medium text-slate-900">
-                  {student.year === 1
-                    ? `${student.year}st year`
-                    : `${student.year}nd year`}
+                  {getYearLabel(student?.year)}
                 </span>
               </div>
 
               <div className="flex justify-between gap-4">
                 <span className="text-slate-500">Projects completed</span>
                 <span className="font-medium text-slate-900">
-                  {student.projects ? "Yes" : "No"}
+                  {student?.projects ? "Yes" : "No"}
                 </span>
               </div>
 
               <div className="flex justify-between gap-4">
                 <span className="text-slate-500">Assessment method</span>
                 <span className="font-medium text-slate-900">
-                  {capitalizeWord(student?.method.split("_").join(" "))}
+                  {capitalizeWord(student?.method?.split("_").join(" "))}
                 </span>
               </div>
             </div>

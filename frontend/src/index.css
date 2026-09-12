@@ -1,1 +1,27 @@
 @import 'tailwindcss';
+
+@theme {
+  --color-startum-paper: #fdfcf8;
+  --color-startum-ink: #122033;
+  --color-startum-muted: #526174;
+  --color-startum-line: #d8dde2;
+  --color-startum-blue: #1267e8;
+  --color-startum-blue-dark: #0b53c5;
+  --color-startum-blue-soft: #e7f0ff;
+  --color-startum-surface: #f3f5f3;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--color-startum-paper);
+    color: var(--color-startum-ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  a, button { transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease; }
+  :focus-visible { outline: 3px solid var(--color-startum-blue); outline-offset: 3px; }
+}

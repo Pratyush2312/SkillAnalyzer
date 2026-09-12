@@ -8,9 +8,9 @@ function Navbar({ user }) {
 
   const navItems = [
     { label: "Dashboard", path: "/dashboard" },
-    { label: "Skill Analysis", path: "/skill-analysis" },
-    { label: "Jobs", path: "/jobs" },
-    { label: "Skill Gap", path: "/skill-gap" },
+    { label: "Skill Analysis", path: "/dashboard/skill-overview" },
+    { label: "Careers", path: "/dashboard/career-recommendations" },
+    { label: "Skill Gap", path: "/dashboard/skill-gap" },
   ];
 
   const getNavLinkClass = ({ isActive }) =>
@@ -35,21 +35,20 @@ function Navbar({ user }) {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Logo */}
         <Link to="/" className="inline-flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
-            <span className="text-sm font-bold text-white">S</span>
-          </div>
-
           <span className="text-xl font-bold tracking-tight text-slate-900">
-            Skill<span className="text-blue-600">Match</span>
+            Startum
           </span>
         </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden items-center gap-8 md:flex">
           {navItems.map((item) => (
-            <NavLink key={item.path} to={item.path} className={getNavLinkClass}>
+            <NavLink
+              key={item.path}
+              to={item.path}
+              end={item.path === "/dashboard"}
+              className={getNavLinkClass}>
               {item.label}
             </NavLink>
           ))}
@@ -103,7 +102,7 @@ function Navbar({ user }) {
               </div>
 
               <NavLink
-                to="/profile"
+                to="/dashboard/view-profile"
                 onClick={() => setIsProfileOpen(false)}
                 className="mt-1 flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-blue-600">
                 <UserCircle className="h-4 w-4" />

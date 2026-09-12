@@ -2,7 +2,9 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { api } from "../../../config/api";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router";
 const useAuthHook = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -25,6 +27,7 @@ const useAuthHook = () => {
     try {
       const res = await api.post("/auth/login", data);
       toast.success(res.data.message);
+      navigate('/dashboard');
     } catch (error) {
       console.log(error);
     }
