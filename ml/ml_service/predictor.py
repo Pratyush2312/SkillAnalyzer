@@ -36,10 +36,10 @@ FEATURE_NAMES_PATH = os.path.join(
 # LOAD MODEL ARTIFACTS
 # ============================================================
 
-model = joblib.load('./processed/career_model.joblib')
-encoders = joblib.load('./processed/preprocessing.joblib')
-career_labels = joblib.load('./processed/career_labels.joblib')
-feature_names = joblib.load('./processed/feature_names.joblib')
+model = joblib.load(MODEL_PATH)
+encoders = joblib.load(PREPROCESSOR_PATH)
+career_labels = joblib.load(CAREER_LABELS_PATH)
+feature_names = joblib.load(FEATURE_NAMES_PATH)
 
 
 # ============================================================
