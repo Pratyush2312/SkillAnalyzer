@@ -12,9 +12,22 @@ const useAuthHook = () => {
     mode: "onChange",
   });
 
-  const onSubmit = async (data) => {
-    const res = await api.post("/auth/register", data);
-    toast.success(res.data.message);
+  const handleRegister = async (data) => {
+    try {
+      const res = await api.post("/auth/register", data);
+      toast.success(res.data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLogin = async(data) => { 
+    try {
+      const res = await api.post("/auth/login", data);
+      toast.success(res.data.message);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return {
@@ -22,7 +35,8 @@ const useAuthHook = () => {
     handleSubmit,
     getValues,
     errors,
-    onSubmit,
+    handleRegister,
+    handleLogin
   };
 };
 

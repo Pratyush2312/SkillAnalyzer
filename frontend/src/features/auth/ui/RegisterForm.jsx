@@ -5,7 +5,7 @@ import useAuthHook from "../hooks/useAuthHook";
 
 function RegisterForm() {
   const navigate = useNavigate();
-  const { register, handleSubmit, errors, getValues, onSubmit } = useAuthHook();
+  const { register, handleSubmit, errors, getValues, handleRegister} = useAuthHook();
 
   return (
     <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center px-4 py-12">
@@ -83,7 +83,7 @@ function RegisterForm() {
               </p>
             </div>
 
-            <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+            <form className="space-y-5" onSubmit={handleSubmit(handleRegister)}>
               <div>
                 <label
                   htmlFor="name"
