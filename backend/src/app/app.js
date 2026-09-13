@@ -11,6 +11,14 @@ app.use(cors({
     origin:process.env.FRONTEND_URL,
     credentials:true,
 }));
+
+app.get('/', (req, res) => { 
+    res.send({
+        success: true,
+        message:"Server Running"
+    })
+})
+
 app.use(cookieParser())
 app.use('/auth', authRoute);
 app.use("/api/student", studentRoute);

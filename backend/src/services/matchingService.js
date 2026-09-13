@@ -5,14 +5,21 @@ import JobRole from "./../models/JobRole.js";
  * Normalize skill names for reliable comparison.
  */
 const normalizeSkill = (skill) => {
+    // console.log(String(skill || "")
+    //     .trim()
+    //     .toLowerCase())
     return String(skill || "")
         .trim()
         .toLowerCase();
 };
 
+
 /**
  * Convert skills into a clean array.
- * Supports both arrays and comma-separated strings.
+ * Supports:
+ * - Arrays of strings
+ * - Comma-separated strings
+ * - Arrays containing comma-separated strings
  */
 const normalizeSkillArray = (skills = []) => {
     if (typeof skills === "string") {
@@ -20,7 +27,8 @@ const normalizeSkillArray = (skills = []) => {
     }
 
     return skills
-        .map((skill) => String(skill).trim())
+        .flatMap((skill) => String(skill).split(","))
+        .map((skill) => skill.trim().toLowerCase())
         .filter(Boolean);
 };
 
@@ -31,7 +39,12 @@ export const getMatchedSkills = (userSkills, jobSkills) => {
     const userSkillSet = new Set(
         userSkills.map((skill) => normalizeSkill(skill))
     );
-
+    // console.log(userSkills);
+    // // console.log(userSkillSet);
+    // console.log(jobSkills);
+    // console.log(jobSkills.filter((skill) =>
+    //     userSkillSet.has(normalizeSkill(skill))
+    // ))
     return jobSkills.filter((skill) =>
         userSkillSet.has(normalizeSkill(skill))
     );
@@ -98,6 +111,9 @@ export const matchStudentToRole = async (userId, role) => {
         throw new Error("Student profile not found");
     }
 
+    console.log("STUDENT DATA:", student);
+    console.log("Technical Skills:", student.technical_skills);
+    console.log("Programming Languages:", student.programming_languages);
     const job = await getJobRole(role);
 
     if (!job) {
