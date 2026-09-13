@@ -15,8 +15,8 @@ const ProtectedRoute = () => {
         console.error("User is not authenticated:", error);
         setUser(null);
       } finally {
-        setTimeout(() => setLoading(false), 1000);
-        // setLoading(false);
+        // setTimeout(() => setLoading(false), 1000);
+        setLoading(false);
       }
     }
 
