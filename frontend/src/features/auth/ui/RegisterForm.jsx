@@ -213,7 +213,7 @@ function RegisterForm() {
 
             <p
               onClick={() => navigate("/login")}
-              className="mt-8 text-center text-sm text-slate-500">
+              className="mt-8 text-center text-sm text-slate-500 cursor-pointer">
               Already have an account?
             </p>
 

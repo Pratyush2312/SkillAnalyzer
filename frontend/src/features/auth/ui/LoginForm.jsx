@@ -141,7 +141,7 @@ function LoginForm() {
 
             <p
               onClick={() => navigate("/register")}
-              className="mt-8 text-center text-sm text-slate-500">
+              className="mt-8 text-center text-sm text-slate-500 cursor-pointer">
               Don't have an account?
             </p>
 

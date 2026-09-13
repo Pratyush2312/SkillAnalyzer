@@ -35,9 +35,13 @@ const useProfileHook = () => {
     try {
       const res = await api.post("/auth/logout");
       navigate('/');
-      toast.success(res.message);
+      toast.success(res.data.message);
     } catch (error) {
       console.log(error);
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to save profile. Please try again.",
+      );
     }
   }
 

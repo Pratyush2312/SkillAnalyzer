@@ -143,7 +143,7 @@ const Dashboard = () => {
                   </span>
 
                   <span className="text-sm font-semibold text-slate-950">
-                    {student.technical_rating}
+                    {student?.technical_rating}
                     <span className="font-normal text-slate-400">/ 10</span>
                   </span>
                 </div>
@@ -152,7 +152,7 @@ const Dashboard = () => {
                   <div
                     className="h-full bg-indigo-600 transition-all duration-500"
                     style={{
-                      width: `${(student.technical_rating / 10) * 100}%`,
+                      width: `${(student?.technical_rating / 10) * 100}%`,
                     }}
                   />
                 </div>
@@ -163,7 +163,7 @@ const Dashboard = () => {
                   <span className="text-sm text-slate-600">Soft skills</span>
 
                   <span className="text-sm font-semibold text-slate-950">
-                    {student.soft_skill_rating}{" "}
+                    {student?.soft_skill_rating}{" "}
                     <span className="font-normal text-slate-400">/ 10</span>
                   </span>
                 </div>
@@ -172,7 +172,7 @@ const Dashboard = () => {
                   <div
                     className="h-full bg-indigo-600 transition-all duration-500"
                     style={{
-                      width: `${(student.soft_skill_rating / 10) * 100}%`,
+                      width: `${(student?.soft_skill_rating / 10) * 100}%`,
                     }}
                   />
                 </div>
@@ -293,8 +293,6 @@ const Dashboard = () => {
             </button> */}
           </div>
         </section>
-
-        {/* Recent Activity / Status */}
         <section className="mt-8 grid gap-6 md:grid-cols-2">
           <div className="border border-slate-200 bg-white p-6">
             <div className="flex items-center gap-3">
@@ -310,7 +308,7 @@ const Dashboard = () => {
             </div>
 
             <p className="mt-5 text-base font-medium text-slate-900">
-              Review your skill gaps for {student.career_interest}.
+              Review your skill gaps for {student?.career_interest}.
             </p>
 
             <p className="mt-2 text-sm leading-6 text-slate-500">
