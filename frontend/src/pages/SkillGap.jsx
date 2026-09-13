@@ -38,7 +38,7 @@ export default function SkillGap() {
       const response = await api.get(
         `/career/match?role=${encodeURIComponent(role)}`,
       );
-
+      console.log(response);
       setSkillMatchResult(response.data.data);
     } catch (error) {
       console.error("Failed to fetch skill match:", error);
@@ -82,7 +82,6 @@ export default function SkillGap() {
   return (
     <main className="min-h-full bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        {/* Breadcrumb */}
         <div className="mb-5 flex items-center gap-2 text-sm text-slate-500">
           <Link to="/dashboard" className="transition hover:text-indigo-600">
             Dashboard
@@ -199,7 +198,7 @@ export default function SkillGap() {
 
           <SummaryCard
             icon={<AlertCircle size={19} />}
-            title="Required gaps"
+            title="Required Skills"
             count={missingSkills.length}
             description="Skills you need to learn"
             iconClassName="bg-rose-50 text-rose-600"

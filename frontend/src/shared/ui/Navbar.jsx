@@ -1,7 +1,7 @@
 import { NavLink, Link } from "react-router";
 import { UserCircle, Menu, X, ChevronDown } from "lucide-react";
 import { useState } from "react";
-
+import logo from "../../assets/startum_logo.png";
 function Navbar({ user }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -36,9 +36,13 @@ function Navbar({ user }) {
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link to="/" className="inline-flex items-center gap-2">
-          <span className="text-xl font-bold tracking-tight text-slate-900">
-            Startum
-          </span>
+          <div className="w-27 h-27 flex items-center justify-center overflow-hidden">
+            <img
+              src={logo}
+              alt="Career recommendation logo"
+              className="w-full h-full object-contain"
+            />
+          </div>
         </Link>
 
         {/* Desktop Navigation */}
@@ -64,8 +68,6 @@ function Navbar({ user }) {
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700">
               {userInitials}
             </div>
-
-            {/* User Details */}
             <div className="hidden text-left lg:block">
               <p className="max-w-32 truncate text-sm font-semibold text-slate-900">
                 {userName}

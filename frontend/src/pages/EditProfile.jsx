@@ -46,11 +46,12 @@ export default function EditProfile() {
     if (!Number.isFinite(numericYear)) {
       return "Not available";
     }
-
+    if (year === 5) {
+      return "Graduate";
+    }
     if (numericYear === 1) return "1st Year";
     if (numericYear === 2) return "2nd Year";
     if (numericYear === 3) return "3rd Year";
-    if (numericYear === 4) return "4th Year";
 
     return `${numericYear}th Year`;
   }
@@ -75,7 +76,6 @@ export default function EditProfile() {
     });
   }, [student, reset]);
 
-
   const formatText = (value) => {
     if (Array.isArray(value)) {
       return value.join(", ");
@@ -83,7 +83,6 @@ export default function EditProfile() {
 
     return String(value || "").trim();
   };
-
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -94,6 +93,7 @@ export default function EditProfile() {
         "2nd Year": 2,
         "3rd Year": 3,
         "4th Year": 4,
+        Graduate: 5,
       };
 
       const formattedData = {
@@ -117,9 +117,6 @@ export default function EditProfile() {
 
         projects: data.projects === true || data.projects === "true",
       };
-
-      console.log("Formatted form data:", formattedData);
-
       await api.put("/api/student/profile/update", formattedData);
 
       toast.success("Profile updated successfully");
@@ -186,7 +183,7 @@ export default function EditProfile() {
                   "2nd Year",
                   "3rd Year",
                   "4th Year",
-                  "Postgraduate",
+                  "Graduate",
                 ]}
               />
 
@@ -201,7 +198,6 @@ export default function EditProfile() {
             </div>
           </section>
 
-          {/* Technical Skills */}
           <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <SectionHeader
               icon={<Code2 size={21} />}
@@ -235,7 +231,6 @@ export default function EditProfile() {
             </div>
           </section>
 
-          {/* Soft Skills */}
           <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <SectionHeader
               icon={<Users size={21} />}

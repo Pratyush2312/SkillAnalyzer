@@ -15,16 +15,21 @@ const ProtectedRoute = () => {
         console.error("User is not authenticated:", error);
         setUser(null);
       } finally {
-        setLoading(false);
+        setTimeout(() => setLoading(false), 1000);
+        // setLoading(false);
       }
     }
 
     hydrateUser();
   }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+if (loading) {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[#f8fafc]">
+      <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-200 border-t-blue-600" />
+    </div>
+  );
+}
+  
 
   if (!user) {
     return <Navigate to="/login" replace />;

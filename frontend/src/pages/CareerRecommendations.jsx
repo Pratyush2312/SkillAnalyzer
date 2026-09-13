@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ArrowLeft, BriefcaseBusiness, LoaderCircle } from "lucide-react";
+import { ArrowLeft, BriefcaseBusiness, LoaderCircle, ChevronRight } from "lucide-react";
 import { Link } from "react-router";
 import { api } from "../config/api";
 
@@ -35,14 +35,16 @@ const CareerRecommendations = () => {
   return (
     <div className="min-h-screen bg-[#f8fafc] px-6 py-8 lg:px-10">
       <div className="mx-auto max-w-6xl">
-        {/* Header */}
         <div className="mb-10">
-          <Link
-            to="/dashboard"
-            className="mb-6 inline-flex items-center gap-2 text-sm text-slate-500 transition hover:text-slate-900">
-            <ArrowLeft size={16} />
-            Back to dashboard
-          </Link>
+          <div className="mb-5 flex items-center gap-2 text-sm text-slate-500">
+            <Link to="/dashboard" className="transition hover:text-indigo-600">
+              Dashboard
+            </Link>
+
+            <ChevronRight size={15} />
+
+            <span className="font-medium text-slate-800">Careers</span>
+          </div>
 
           <p className="mb-3 text-sm font-medium uppercase tracking-[0.14em] text-indigo-600">
             Career exploration

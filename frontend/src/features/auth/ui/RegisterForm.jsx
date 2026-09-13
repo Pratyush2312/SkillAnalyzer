@@ -2,7 +2,7 @@ import { User, Mail, Lock, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import useAuthHook from "../hooks/useAuthHook";
-
+import logo from '../../../assets/startum_logo.png'
 function RegisterForm() {
   const navigate = useNavigate();
   const { register, handleSubmit, errors, getValues, handleRegister} = useAuthHook();
@@ -13,16 +13,16 @@ function RegisterForm() {
         <div className="hidden lg:flex flex-col justify-between bg-[#f1f6ff] p-12 relative overflow-hidden">
           <div className="relative z-10">
             <div className="inline-flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-                <span className="text-white font-bold text-sm">S</span>
+              <div className="w-35 h-35 flex items-center justify-center overflow-hidden">
+                <img
+                  src={logo}
+                  alt="Career recommendation logo"
+                  className="w-full h-full object-contain"
+                />
               </div>
-
-              <span className="text-xl font-bold tracking-tight text-slate-900">
-                Skill<span className="text-blue-600">Match</span>
-              </span>
             </div>
 
-            <div className="mt-20 max-w-md">
+            <div className="max-w-md">
               <p className="text-sm font-semibold text-blue-600 mb-4">
                 START YOUR JOURNEY
               </p>
@@ -59,12 +59,8 @@ function RegisterForm() {
           <div className="max-w-md mx-auto">
             <div className="lg:hidden mb-10">
               <div className="inline-flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">S</span>
-                </div>
-
                 <span className="text-xl font-bold tracking-tight text-slate-900">
-                  Skill<span className="text-blue-600">Match</span>
+                  Startum
                 </span>
               </div>
             </div>
@@ -75,7 +71,7 @@ function RegisterForm() {
               </p>
 
               <h2 className="text-3xl font-bold tracking-tight text-slate-900">
-                Welcome to SkillMatch
+                Welcome to Startum
               </h2>
 
               <p className="mt-2 text-sm text-slate-500">
@@ -208,7 +204,6 @@ function RegisterForm() {
               </div>
 
               <button
-                onClick={() => navigate("/profile")}
                 type="submit"
                 className="w-full h-12 rounded-xl bg-blue-600 text-white text-sm font-semibold flex items-center justify-center gap-2 transition hover:bg-blue-700 active:scale-[0.99] shadow-sm shadow-blue-600/20">
                 Create account

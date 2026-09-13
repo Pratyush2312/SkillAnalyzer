@@ -20,12 +20,8 @@ function ProfileSetup() {
       <div className="mx-auto max-w-6xl">
         <div className="mb-8 flex items-center justify-between">
           <div className="inline-flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
-              <span className="text-sm font-bold text-white">S</span>
-            </div>
-
             <span className="text-xl font-bold tracking-tight text-slate-900">
-              Skill<span className="text-blue-600">Match</span>
+              Startum
             </span>
           </div>
 

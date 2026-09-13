@@ -18,6 +18,7 @@ const useAuthHook = () => {
     try {
       const res = await api.post("/auth/register", data);
       toast.success(res.data.message);
+      navigate('/profile');
     } catch (error) {
       console.log(error);
     }

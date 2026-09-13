@@ -13,10 +13,11 @@ import {
 import { Link } from "react-router";
 import { useContext } from "react";
 import { CareerContext } from "../../../context/MyCareer";
+import useProfileHook from "../hooks/useProfileHook";
 
 export default function ViewProfile() {
   const { student } = useContext(CareerContext);
-
+  const { handleLogout } = useProfileHook();
   if (!student) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-50">
@@ -84,12 +85,9 @@ export default function ViewProfile() {
               </div>
             </div>
           </div>
-
-  
         </div>
 
         <div className="space-y-6">
-          {/* Personal Information */}
           <ProfileSection
             icon={<UserRound size={21} />}
             title="Personal information"
@@ -110,7 +108,6 @@ export default function ViewProfile() {
             </div>
           </ProfileSection>
 
-          {/* Technical Skills */}
           <ProfileSection
             icon={<Code2 size={21} />}
             title="Technical skills"
@@ -134,7 +131,6 @@ export default function ViewProfile() {
             </div>
           </ProfileSection>
 
-          {/* Soft Skills */}
           <ProfileSection
             icon={<Users size={21} />}
             title="Soft skills"
@@ -150,7 +146,6 @@ export default function ViewProfile() {
             </div>
           </ProfileSection>
 
-          {/* Career Preferences */}
           <ProfileSection
             icon={<BriefcaseBusiness size={21} />}
             title="Career preferences"
@@ -197,13 +192,16 @@ export default function ViewProfile() {
               </div>
             </div>
           </ProfileSection>
+          <button
+            onClick={handleLogout}
+            className="border border-slate-200 rounded-2xl bg-red-500 text-white px-3 py-2">
+            Log Out
+          </button>
         </div>
       </div>
     </div>
   );
 }
-
-/* ---------- Reusable Components ---------- */
 
 function ProfileSection({ icon, title, description, children }) {
   return (

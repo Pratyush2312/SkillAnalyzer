@@ -13,7 +13,7 @@ import {
   Target,
   X,
 } from "lucide-react";
-
+import logo from "../../assets/startum_logo.png";
 const features = [
   [
     BarChart3,
@@ -62,22 +62,6 @@ const steps = [
     "Turn insight into a practical plan for what comes next.",
   ],
 ];
-
-function Wordmark() {
-  return (
-    <Link
-      to="/"
-      className="group inline-flex items-center gap-2.5"
-      aria-label="Startum home">
-      {/* <span className="grid size-8 place-items-center bg-[#1267e8] text-sm font-black text-white transition-transform duration-200 group-hover:-rotate-6">
-        S
-      </span> */}
-      <span className="text-lg font-bold tracking-[-0.06em] text-[#122033]">
-        Startum
-      </span>
-    </Link>
-  );
-}
 
 function ProductPreview() {
   return (
@@ -189,7 +173,13 @@ export default function Landing() {
         <nav
           className="mx-auto flex h-[72px] max-w-[1240px] items-center justify-between px-5 sm:px-8"
           aria-label="Main navigation">
-          <Wordmark />
+          <div className="w-35 h-35 flex items-center justify-center overflow-hidden shrink-0">
+            <img
+              src={logo}
+              alt="Career recommendation logo"
+              className="w-full h-full object-contain"
+            />
+          </div>
           <div className="hidden items-center gap-7 md:flex">
             <a
               href="#features"
@@ -299,8 +289,8 @@ export default function Landing() {
                   Explore how it works <ArrowDownRight className="size-4" />
                 </a>
               </div>
-              <p className="mt-9 border-t border-[#d8dde2] pt-4 text-sm text-[#64748b]">
-                <span className="font-semibold text-[#122033]">
+              <p className="mt-9 border-t border-startum-line pt-4 text-sm text-[#64748b]">
+                <span className="font-semibold text-startum-ink">
                   Start with the signal you already have.
                 </span>{" "}
                 Skills, interests, coursework, and projects.
@@ -425,9 +415,8 @@ export default function Landing() {
         </section>
       </main>
       <footer className="border-t border-[#d8dde2]">
-        <div className="mx-auto flex max-w-[1240px] flex-col gap-8 px-5 py-10 sm:px-8 md:flex-row md:items-end md:justify-between">
+        <div className="mx-auto flex max-w-310 flex-col gap-8 px-5 py-10 sm:px-8 md:flex-row md:items-end md:justify-between">
           <div>
-            <Wordmark />
             <p className="mt-3 text-sm text-[#64748b]">
               A clearer starting point for student careers.
             </p>

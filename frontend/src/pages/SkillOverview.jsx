@@ -9,6 +9,7 @@ import {
   Sparkles,
   Target,
   Users,
+  ChevronRight
 } from "lucide-react";
 import { Link, useOutletContext } from "react-router";
 import { CareerContext } from "../context/MyCareer";
@@ -50,14 +51,16 @@ const SkillOverview = () => {
   return (
     <div className="min-h-screen bg-[#f8f9fb] px-5 py-7 sm:px-8 lg:px-10">
       <div className="mx-auto max-w-6xl">
-        {/* Header */}
         <header className="mb-10">
-          <Link
-            to="/dashboard"
-            className="mb-7 inline-flex items-center gap-2 text-sm text-slate-500 transition-colors hover:text-slate-900">
-            <ArrowLeft size={16} />
-            Back to dashboard
-          </Link>
+          <div className="mb-5 flex items-center gap-2 text-sm text-slate-500">
+            <Link to="/dashboard" className="transition hover:text-indigo-600">
+              Dashboard
+            </Link>
+
+            <ChevronRight size={15} />
+
+            <span className="font-medium text-slate-800">Skill Analysis</span>
+          </div>
 
           <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
             <div>

@@ -1,7 +1,7 @@
 import { Mail, Lock, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useNavigate } from "react-router";
 import useAuthHook from "../hooks/useAuthHook";
-
+import logo from '../../../assets/startum_logo.png'
 function LoginForm() {
   const navigate = useNavigate();
   const { handleLogin, handleSubmit, register, errors } = useAuthHook();
@@ -10,17 +10,15 @@ function LoginForm() {
       <div className="w-full max-w-6xl grid lg:grid-cols-2 bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="hidden lg:flex flex-col justify-between bg-[#f1f6ff] p-12 relative overflow-hidden">
           <div className="relative z-10">
-            <div className="inline-flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-                <span className="text-white font-bold text-sm">S</span>
+              <div className="w-35 h-35 flex items-center justify-center overflow-hidden">
+                <img
+                  src={logo}
+                  alt="Career recommendation logo"
+                  className="w-full h-full object-contain"
+                />
               </div>
 
-              <span className="text-xl font-bold tracking-tight text-slate-900">
-                Skill<span className="text-blue-600">Match</span>
-              </span>
-            </div>
-
-            <div className="mt-20 max-w-md">
+            <div className=" max-w-md">
               <p className="text-sm font-semibold text-blue-600 mb-4">
                 WELCOME BACK
               </p>
@@ -55,18 +53,8 @@ function LoginForm() {
         </div>
 
         <div className="p-6 sm:p-10 lg:p-12">
-          <div className="max-w-md mx-auto">
-            <div className="lg:hidden mb-10">
-              <div className="inline-flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">S</span>
-                </div>
-
-                <span className="text-xl font-bold tracking-tight text-slate-900">
-                  Skill<span className="text-blue-600">Match</span>
-                </span>
-              </div>
-            </div>
+          <div className="max-w-md mx-auto h-full flex flex-col justify-center">
+           
 
             <div className="mb-8">
               <p className="text-sm font-semibold text-blue-600 mb-3">
@@ -78,7 +66,7 @@ function LoginForm() {
               </h2>
 
               <p className="mt-2 text-sm text-slate-500">
-                Sign in to continue your career journey with SkillMatch.
+                Sign in to continue your career journey with Startum.
               </p>
             </div>
 
@@ -121,12 +109,6 @@ function LoginForm() {
                     className="block text-sm font-medium text-slate-700">
                     Password
                   </label>
-
-                  <a
-                    href="#"
-                    className="text-xs font-semibold text-blue-600 hover:text-blue-700">
-                    Forgot password?
-                  </a>
                 </div>
 
                 <div className="relative">
@@ -158,7 +140,7 @@ function LoginForm() {
             </form>
 
             <p
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/register")}
               className="mt-8 text-center text-sm text-slate-500">
               Don't have an account?
             </p>

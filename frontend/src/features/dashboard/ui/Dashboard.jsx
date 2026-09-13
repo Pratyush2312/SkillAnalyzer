@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router";
 import { CareerContext } from "../../../context/MyCareer";
+import DashboardSkeleton from "./DashboardSkeleton";
 
 const Dashboard = () => {
   const { student, loading } = useContext(CareerContext);
@@ -42,17 +43,20 @@ const Dashboard = () => {
     return `${numericYear}th year`;
   }
   const navigate = useNavigate();
+  if (loading) {
+    return <DashboardSkeleton />;
+  }
   return (
     <div className="min-h-screen bg-[#f8fafc]">
       <main className="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-10">
         <section className="flex flex-col justify-between gap-5 border-b border-slate-200 pb-8 sm:flex-row sm:items-end">
           <div>
-            <p className="mb-3 text-sm font-medium text-indigo-600">
-              Student dashboard
+            <p className="mb-3 text-sm font-medium uppercase tracking-[0.14em] text-indigo-600">
+              Student Dashboard
             </p>
 
             <h1 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
-              Welcome back, {student?.name || "there"}.
+              Welcome back, {student?.name || "User"}.
             </h1>
 
             <p className="mt-3 max-w-xl text-sm leading-6 text-slate-500">
@@ -64,7 +68,7 @@ const Dashboard = () => {
           <button
             onClick={() => navigate("/dashboard/edit-profile")}
             type="button"
-            className="inline-flex w-fit items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-indigo-400 hover:text-indigo-600">
+            className="inline-flex w-fit items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-indigo-400 hover:text-indigo-600 cursor-pointer">
             <Pencil size={15} />
             Edit profile
           </button>
@@ -106,7 +110,7 @@ const Dashboard = () => {
             <button
               onClick={() => navigate("/dashboard/career-recommendations")}
               type="button"
-              className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 transition hover:text-indigo-700">
+              className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 transition hover:text-indigo-700 cursor-pointer">
               View career recommendations
               <ArrowUpRight size={16} />
             </button>
@@ -139,12 +143,18 @@ const Dashboard = () => {
                   </span>
 
                   <span className="text-sm font-semibold text-slate-950">
-                    7.8 <span className="font-normal text-slate-400">/ 10</span>
+                    {student.technical_rating}
+                    <span className="font-normal text-slate-400">/ 10</span>
                   </span>
                 </div>
 
                 <div className="h-1.5 bg-slate-100">
-                  <div className="h-full w-[78%] bg-indigo-600" />
+                  <div
+                    className="h-full bg-indigo-600 transition-all duration-500"
+                    style={{
+                      width: `${(student.technical_rating / 10) * 100}%`,
+                    }}
+                  />
                 </div>
               </div>
 
@@ -153,12 +163,18 @@ const Dashboard = () => {
                   <span className="text-sm text-slate-600">Soft skills</span>
 
                   <span className="text-sm font-semibold text-slate-950">
-                    8.2 <span className="font-normal text-slate-400">/ 10</span>
+                    {student.soft_skill_rating}{" "}
+                    <span className="font-normal text-slate-400">/ 10</span>
                   </span>
                 </div>
 
                 <div className="h-1.5 bg-slate-100">
-                  <div className="h-full w-[82%] bg-indigo-600" />
+                  <div
+                    className="h-full bg-indigo-600 transition-all duration-500"
+                    style={{
+                      width: `${(student.soft_skill_rating / 10) * 100}%`,
+                    }}
+                  />
                 </div>
               </div>
             </div>
@@ -166,14 +182,13 @@ const Dashboard = () => {
             <button
               onClick={() => navigate("/dashboard/skill-overview")}
               type="button"
-              className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 transition hover:text-indigo-700">
+              className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 transition hover:text-indigo-700 cursor-pointer">
               Analyze my skills
               <ArrowUpRight size={16} />
             </button>
           </div>
         </section>
 
-        {/* Actions */}
         <section className="mt-8">
           <div className="mb-5">
             <h2 className="text-xl font-semibold tracking-tight text-slate-950">
@@ -189,7 +204,7 @@ const Dashboard = () => {
             <button
               onClick={() => navigate("/dashboard/skill-overview")}
               type="button"
-              className="group border-b border-slate-200 p-5 text-left transition hover:bg-slate-50 sm:border-r lg:border-b-0">
+              className="group border-b border-slate-200 p-5 text-left transition hover:bg-slate-50 sm:border-r lg:border-b-0 cursor-pointer">
               <ClipboardCheck
                 size={22}
                 strokeWidth={1.8}
@@ -213,7 +228,7 @@ const Dashboard = () => {
             <button
               onClick={() => navigate("/dashboard/career-recommendations")}
               type="button"
-              className="group border-b border-slate-200 p-5 text-left transition hover:bg-slate-50 lg:border-b-0 lg:border-r">
+              className="group border-b border-slate-200 p-5 text-left transition hover:bg-slate-50 lg:border-b-0 lg:border-r cursor-pointer">
               <GraduationCap
                 size={22}
                 strokeWidth={1.8}
@@ -237,7 +252,7 @@ const Dashboard = () => {
             <button
               onClick={() => navigate("/dashboard/skill-gap")}
               type="button"
-              className="group border-b border-slate-200 p-5 text-left transition hover:bg-slate-50 sm:border-r lg:border-b-0">
+              className="group border-b border-slate-200 p-5 text-left transition hover:bg-slate-50 sm:border-r lg:border-b-0 cursor-pointer">
               <Target size={22} strokeWidth={1.8} className="text-indigo-600" />
 
               <h3 className="mt-5 text-sm font-semibold text-slate-900">
@@ -304,8 +319,9 @@ const Dashboard = () => {
             </p>
 
             <button
+              onClick={() => navigate("/dashboard/skill-gap")}
               type="button"
-              className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700">
+              className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700 cursor-pointer">
               View skill gaps
               <ArrowUpRight size={16} />
             </button>
@@ -348,8 +364,9 @@ const Dashboard = () => {
             </div>
 
             <button
+              onClick={() => navigate("/dashboard/view-profile")}
               type="button"
-              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700">
+              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700 cursor-pointer">
               View profile
               <ArrowUpRight size={16} />
             </button>

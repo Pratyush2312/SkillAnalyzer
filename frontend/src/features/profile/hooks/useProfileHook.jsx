@@ -31,11 +31,22 @@ const useProfileHook = () => {
     }
   };
 
+  const handleLogout = async () => { 
+    try {
+      const res = await api.post("/auth/logout");
+      navigate('/');
+      toast.success(res.message);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return {
     register,
     handleSubmit,
     errors,
     onSubmit,
+    handleLogout
   };
 };
 
