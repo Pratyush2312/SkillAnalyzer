@@ -159,7 +159,7 @@ function RegisterForm() {
                       required: "Please create a password",
                       minLength: {
                         value: 6,
-                        message: "Password must be at least 8 characters",
+                        message: "Password must be at least 6 characters",
                       },
                     })}
                     className="w-full h-12 pl-10 pr-4 rounded-xl border border-slate-200 bg-slate-50/50 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"

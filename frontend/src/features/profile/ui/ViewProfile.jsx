@@ -240,7 +240,6 @@ function RatingDisplay({ label, rating, description }) {
         <p className="text-sm font-medium text-slate-500">{label}</p>
 
         <div className="flex items-center gap-2">
-          <Star size={16} className="fill-amber-400 text-amber-400" />
 
           <span className="text-sm font-semibold text-indigo-600">
             {rating}/10
