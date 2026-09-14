@@ -93,6 +93,10 @@ export const getStudentForMatching = async (userId) => {
 /**
  * Fetch job role by role name.
  */
+const escapeRegex = (value) => {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+};
+
 export const getJobRole = async (role) => {
     const normalizedRole = role.trim();
 
