@@ -101,10 +101,7 @@ const SkillOverview = () => {
 
               <span className="text-2xl font-semibold tracking-tight text-slate-950">
                 {technicalRating}
-                <span className="text-sm font-normal text-slate-400">
-                  {" "}
-                  / 5
-                </span>
+                <span className="text-sm font-normal text-slate-400"> / 5</span>
               </span>
             </div>
 
@@ -113,7 +110,7 @@ const SkillOverview = () => {
                 <div
                   className="h-full rounded-full bg-indigo-600 transition-all duration-700"
                   style={{
-                    width: `${Math.min(technicalRating * 5, 100)}%`,
+                    width: `${(student?.technical_rating / 5) * 100}%`,
                   }}
                 />
               </div>
@@ -146,10 +143,7 @@ const SkillOverview = () => {
 
               <span className="text-2xl font-semibold tracking-tight text-slate-950">
                 {softSkillRating}
-                <span className="text-sm font-normal text-slate-400">
-                  {" "}
-                  / 5
-                </span>
+                <span className="text-sm font-normal text-slate-400"> / 5</span>
               </span>
             </div>
 
@@ -158,7 +152,7 @@ const SkillOverview = () => {
                 <div
                   className="h-full rounded-full bg-emerald-500 transition-all duration-700"
                   style={{
-                    width: `${Math.min(softSkillRating * 5, 100)}%`,
+                    width: `${(student?.soft_skill_rating / 5) * 100}%`,
                   }}
                 />
               </div>
