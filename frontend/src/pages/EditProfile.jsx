@@ -286,19 +286,22 @@ export default function EditProfile() {
                 placeholder="What kind of support would help you?"
               />
 
-              <SelectField
-                label="Preferred learning method"
+              <select
+                id="method"
                 name="method"
-                register={register}
-                options={[
-                  "Videos",
-                  "Articles",
-                  "Hands-on Projects",
-                  "Mentorship",
-                  "Courses",
-                  "Group Learning",
-                ]}
-              />
+                defaultValue=""
+                {...register("method", {
+                  required: "Assessment method is required",
+                })}
+                className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 text-sm text-slate-600 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10">
+                <option value="" disabled>
+                  Select a method
+                </option>
+                <option value="videos">Videos</option>
+                <option value="documentation">Documentation</option>
+                <option value="hands_on_projects">Hands on Projects</option>
+                <option value="courses">Courses</option>
+              </select>
 
               <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <input
@@ -411,12 +414,13 @@ function SelectField({ label, name, register, options }) {
       </label>
 
       <select
+        defaultValue=""
         {...register(name)}
         className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-50">
         <option value="">Select an option</option>
 
         {options.map((option) => (
-          <option key={option} value={option}>
+          <option key={option} value={option.to_lower}>
             {option}
           </option>
         ))}

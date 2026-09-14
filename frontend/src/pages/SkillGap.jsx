@@ -14,6 +14,9 @@ import { Link } from "react-router";
 import { useContext, useEffect, useState } from "react";
 import { api } from "../config/api";
 import { CareerContext } from "../context/MyCareer";
+import RoadMap from './RoadMap';
+
+
 
 export default function SkillGap() {
   const { student } = useContext(CareerContext);
@@ -23,6 +26,24 @@ export default function SkillGap() {
   const [skillMatchResult, setSkillMatchResult] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [showRoadmap, setShowRoadmap] = useState(false);
+  const [roadmaps, setRoadmaps] = useState([]);
+  const fetchRoadmaps = async () => {
+    try {
+      const res = await api.get(
+        `/roadmap/role/${encodeURIComponent("Software Developer")}`,
+      );
+
+      setRoadmaps(res.data.roadmaps);
+
+      console.log("Roadmaps:", res.data.roadmaps);
+    } catch (error) {
+      console.error(
+        "Failed to fetch roadmaps:",
+        error.response?.data || error.message,
+      );
+    }
+  };
 
   const fetchSkillMatch = async () => {
     if (!role) {
@@ -53,6 +74,7 @@ export default function SkillGap() {
 
   useEffect(() => {
     fetchSkillMatch();
+    fetchRoadmaps();
   }, [role]);
 
   if (loading) {
@@ -265,15 +287,23 @@ export default function SkillGap() {
               </div>
             </div>
 
-            <Link
-              to="/dashboard/roadmap"
+            <button
+              onClick={() => setShowRoadmap(true)}
+              // to="/dashboard/roadmap"
               className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700">
               View roadmap
               <ArrowRight size={16} />
-            </Link>
+            </button>
           </div>
         </div>
       </div>
+      {showRoadmap && (
+        <RoadMap
+          roadmaps={roadmaps}
+          isOpen={showRoadmap}
+          onClose={() => setShowRoadmap(false)}
+        />
+      )}
     </main>
   );
 }

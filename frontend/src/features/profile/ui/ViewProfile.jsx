@@ -28,12 +28,18 @@ export default function ViewProfile() {
     );
   }
 
+  const formatMethod = (method) => { 
+    return method.split('_').join(' ');
+  }
+
   const getYearLabel = (year) => {
     const numericYear = Number(year);
 
     if (!Number.isFinite(numericYear)) {
       return "Not available";
     }
+
+    if (numericYear === 5) return "Graduate";
 
     if (numericYear === 1) return "1st Year";
     if (numericYear === 2) return "2nd Year";
@@ -158,7 +164,7 @@ export default function ViewProfile() {
 
               <InfoItem
                 label="Preferred learning method"
-                value={student.method}
+                value={formatMethod(student.method)}
               />
 
               <InfoItem

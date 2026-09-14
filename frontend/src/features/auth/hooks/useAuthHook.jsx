@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { api } from "../../../config/api";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router";
+import { CareerContext } from "../../../context/MyCareer";
 
 const useAuthHook = () => {
   const navigate = useNavigate();
-
+  const { fetchStudent } = useContext(CareerContext);
   const {
     register,
     handleSubmit,
@@ -62,6 +63,7 @@ const useAuthHook = () => {
       switch (res.status) {
         case 201:
           toast.success("Login successful! Welcome back.");
+          await fetchStudent();
           navigate("/dashboard");
           break;
 

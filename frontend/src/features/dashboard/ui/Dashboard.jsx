@@ -35,12 +35,12 @@ const Dashboard = () => {
     if (!Number.isFinite(numericYear)) {
       return "Not available";
     }
-
+    if (numericYear === 5) return "Graduate";
     if (numericYear === 1) return "1st year";
     if (numericYear === 2) return "2nd year";
     if (numericYear === 3) return "3rd year";
 
-    return `${numericYear}th year`;
+  
   }
   const navigate = useNavigate();
   if (loading) {

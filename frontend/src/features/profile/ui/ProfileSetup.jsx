@@ -14,7 +14,8 @@ import { useNavigate } from "react-router";
 
 function ProfileSetup() {
   const { register, errors, handleSubmit, onSubmit } = useProfileHook();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-[#f8fafc] px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
@@ -158,6 +159,12 @@ function ProfileSetup() {
                         className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                       />
                     </div>
+
+                    {errors.name && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.name.message}
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -184,6 +191,12 @@ function ProfileSetup() {
                       <option value="4">4th Year</option>
                       <option value="Graduate">Graduate</option>
                     </select>
+
+                    {errors.year && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.year.message}
+                      </p>
+                    )}
                   </div>
 
                   <div className="sm:col-span-2">
@@ -207,6 +220,12 @@ function ProfileSetup() {
                         className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                       />
                     </div>
+
+                    {errors.current_course && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.current_course.message}
+                      </p>
+                    )}
                   </div>
                 </div>
               </section>
@@ -248,6 +267,12 @@ function ProfileSetup() {
                       className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                     />
 
+                    {errors.technical_skills && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.technical_skills.message}
+                      </p>
+                    )}
+
                     <p className="mt-2 text-xs text-slate-400">
                       Separate multiple skills with commas.
                     </p>
@@ -270,6 +295,12 @@ function ProfileSetup() {
                       })}
                       className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                     />
+
+                    {errors.programming_languages && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.programming_languages.message}
+                      </p>
+                    )}
 
                     <p className="mt-2 text-xs text-slate-400">
                       Separate multiple languages with commas.
@@ -300,6 +331,12 @@ function ProfileSetup() {
                       <option value="4">4 - Advanced</option>
                       <option value="5">5 - Expert</option>
                     </select>
+
+                    {errors.technical_rating && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.technical_rating.message}
+                      </p>
+                    )}
                   </div>
                 </div>
               </section>
@@ -341,6 +378,12 @@ function ProfileSetup() {
                       className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                     />
 
+                    {errors.soft_skills && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.soft_skills.message}
+                      </p>
+                    )}
+
                     <p className="mt-2 text-xs text-slate-400">
                       Separate multiple skills with commas.
                     </p>
@@ -370,13 +413,18 @@ function ProfileSetup() {
                       <option value="4">4 - Advanced</option>
                       <option value="5">5 - Expert</option>
                     </select>
+
+                    {errors.soft_skill_rating && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.soft_skill_rating.message}
+                      </p>
+                    )}
                   </div>
                 </div>
               </section>
 
               <div className="h-px bg-slate-100" />
 
-              {/* Projects */}
               <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="mb-5">
                   <h2 className="text-lg font-semibold text-slate-900">
@@ -474,6 +522,12 @@ function ProfileSetup() {
                     })}
                     className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                   />
+
+                  {errors.career_interest && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.career_interest.message}
+                    </p>
+                  )}
                 </div>
               </section>
 
@@ -513,6 +567,12 @@ function ProfileSetup() {
                       })}
                       className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                     />
+
+                    {errors.challenges && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.challenges.message}
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -532,6 +592,12 @@ function ProfileSetup() {
                       })}
                       className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                     />
+
+                    {errors.support_required && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.support_required.message}
+                      </p>
+                    )}
                   </div>
                 </div>
               </section>
@@ -546,7 +612,7 @@ function ProfileSetup() {
 
                   <div>
                     <h3 className="font-semibold text-slate-900">
-                      Assessment method
+                      Learning method
                     </h3>
                     <p className="text-xs text-slate-500">
                       Select how you want to provide your information.
@@ -572,16 +638,23 @@ function ProfileSetup() {
                     <option value="" disabled>
                       Select a method
                     </option>
-                    <option value="self_assessment">Self assessment</option>
-                    <option value="guided_assessment">Guided assessment</option>
-                    <option value="resume_based">Resume based</option>
+                    <option value="videos">Videos</option>
+                    <option value="documentation">Documentation</option>
+                    <option value="hands_on_projects">Hands on Projects</option>
+                    <option value="courses">Courses</option>
                   </select>
+
+                  {errors.method && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.method.message}
+                    </p>
+                  )}
                 </div>
               </section>
 
               <div className="flex justify-end border-t border-slate-100 pt-6">
                 <button
-                  onClick={() => navigate("/")}
+                  // onClick={() => navigate("/")}
                   type="submit"
                   className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 text-sm font-semibold text-white shadow-sm shadow-blue-600/20 transition hover:bg-blue-700 active:scale-[0.98]">
                   Save profile

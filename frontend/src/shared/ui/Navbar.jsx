@@ -30,7 +30,7 @@ function Navbar({ user }) {
 
   const userName = user?.name || "Student";
   const userEmail = user?.email || "";
-  const userInitials = getInitials(userName) || "S";
+  const userInitials = user.name.charAt(0) || "S";
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white">
@@ -154,19 +154,13 @@ function Navbar({ user }) {
                 key={item.path}
                 to={item.path}
                 onClick={() => setIsMenuOpen(false)}
-                className={({ isActive }) =>
-                  `rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
-                    isActive
-                      ? "bg-blue-50 text-blue-600"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
-                  }`
-                }>
+                className = { getNavLinkClass }>
                 {item.label}
               </NavLink>
             ))}
 
             <NavLink
-              to="/profile"
+              to="/dashboard/view-profile"
               onClick={() => setIsMenuOpen(false)}
               className={({ isActive }) =>
                 `flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
