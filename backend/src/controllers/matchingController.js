@@ -7,14 +7,16 @@ export const getSkillMatch = async (req, res) => {
         const userId = req.user._id;
         const { role } = req.query;
 
-        if (!role) {
+        if (!role || typeof role !== "string" || !role.trim()) {
             return res.status(400).json({
                 success: false,
                 message: "Job role is required",
             });
         }
 
-        const result = await matchStudentToRole(userId, role);
+        const normalizedRole = role.trim();
+
+        const result = await matchStudentToRole(userId, normalizedRole);
 
         return res.status(200).json({
             success: true,

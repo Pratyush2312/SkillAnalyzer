@@ -94,8 +94,13 @@ export const getStudentForMatching = async (userId) => {
  * Fetch job role by role name.
  */
 export const getJobRole = async (role) => {
+    const normalizedRole = role.trim();
+
     const job = await JobRole.findOne({
-        job_role: role,
+        job_role: {
+            $regex: `^${escapeRegex(normalizedRole)}$`,
+            $options: "i",
+        },
     });
 
     return job;
@@ -106,14 +111,10 @@ export const getJobRole = async (role) => {
  */
 export const matchStudentToRole = async (userId, role) => {
     const student = await getStudentForMatching(userId);
-
+    
     if (!student) {
         throw new Error("Student profile not found");
     }
-
-    console.log("STUDENT DATA:", student);
-    console.log("Technical Skills:", student.technical_skills);
-    console.log("Programming Languages:", student.programming_languages);
     const job = await getJobRole(role);
 
     if (!job) {
