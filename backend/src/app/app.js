@@ -2,6 +2,7 @@ import express from 'express';
 import authRoute from '../routes/authRoute.js'
 import studentRoute from '../routes/studentRoute.js'
 import matchingRoute from '../routes/matchingRoute.js'
+import roadmapRoute from '../routes/roadmapRoute.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 export const app = express();
@@ -23,3 +24,4 @@ app.use(cookieParser())
 app.use('/auth', authRoute);
 app.use("/api/student", studentRoute);
 app.use('/career', matchingRoute);
+app.use('/roadmap', roadmapRoute);

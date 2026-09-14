@@ -13,6 +13,12 @@ export const register = async (req, res) => {
                 message: "Incomplete Credentials"
             })
         }
+        let registeredUser = await User.findOne({ email });
+        if(registeredUser){
+            return res.status(409).json({
+                message:"User already registered"
+            })
+        }
         let hashPassword = await bcrypt.hash(password, 10);
         let user=await User.create({
             name,
