@@ -436,14 +436,14 @@ function RatingField({ label, name, register, value }) {
         <label className="text-sm font-medium text-slate-700">{label}</label>
 
         <span className="text-sm font-semibold text-indigo-600">
-          {value}/10
+          {value}/5
         </span>
       </div>
 
       <input
         type="range"
         min="0"
-        max="10"
+        max="5"
         {...register(name, { valueAsNumber: true })}
         className="w-full accent-indigo-600"
       />

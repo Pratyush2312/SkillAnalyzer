@@ -103,7 +103,7 @@ const SkillOverview = () => {
                 {technicalRating}
                 <span className="text-sm font-normal text-slate-400">
                   {" "}
-                  / 10
+                  / 5
                 </span>
               </span>
             </div>
@@ -113,7 +113,7 @@ const SkillOverview = () => {
                 <div
                   className="h-full rounded-full bg-indigo-600 transition-all duration-700"
                   style={{
-                    width: `${Math.min(technicalRating * 10, 100)}%`,
+                    width: `${Math.min(technicalRating * 5, 100)}%`,
                   }}
                 />
               </div>
@@ -148,7 +148,7 @@ const SkillOverview = () => {
                 {softSkillRating}
                 <span className="text-sm font-normal text-slate-400">
                   {" "}
-                  / 10
+                  / 5
                 </span>
               </span>
             </div>
@@ -158,7 +158,7 @@ const SkillOverview = () => {
                 <div
                   className="h-full rounded-full bg-emerald-500 transition-all duration-700"
                   style={{
-                    width: `${Math.min(softSkillRating * 10, 100)}%`,
+                    width: `${Math.min(softSkillRating * 5, 100)}%`,
                   }}
                 />
               </div>

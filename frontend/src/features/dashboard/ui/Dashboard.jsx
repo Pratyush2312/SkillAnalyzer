@@ -144,7 +144,7 @@ const Dashboard = () => {
 
                   <span className="text-sm font-semibold text-slate-950">
                     {student?.technical_rating}
-                    <span className="font-normal text-slate-400">/ 10</span>
+                    <span className="font-normal text-slate-400">/ 5</span>
                   </span>
                 </div>
 
@@ -152,7 +152,7 @@ const Dashboard = () => {
                   <div
                     className="h-full bg-indigo-600 transition-all duration-500"
                     style={{
-                      width: `${(student?.technical_rating / 10) * 100}%`,
+                      width: `${(student?.technical_rating / 5) * 100}%`,
                     }}
                   />
                 </div>
@@ -164,7 +164,7 @@ const Dashboard = () => {
 
                   <span className="text-sm font-semibold text-slate-950">
                     {student?.soft_skill_rating}{" "}
-                    <span className="font-normal text-slate-400">/ 10</span>
+                    <span className="font-normal text-slate-400">/ 5</span>
                   </span>
                 </div>
 
@@ -172,7 +172,7 @@ const Dashboard = () => {
                   <div
                     className="h-full bg-indigo-600 transition-all duration-500"
                     style={{
-                      width: `${(student?.soft_skill_rating / 10) * 100}%`,
+                      width: `${(student?.soft_skill_rating / 5) * 100}%`,
                     }}
                   />
                 </div>
