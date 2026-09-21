@@ -1,7 +1,7 @@
 import { Mail, Lock, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useNavigate } from "react-router";
 import useAuthHook from "../hooks/useAuthHook";
-import logo from '../../../assets/startum_logo.png'
+import logo from "../../../assets/raahvi_logo.png";
 function LoginForm() {
   const navigate = useNavigate();
   const { handleLogin, handleSubmit, register, errors } = useAuthHook();
@@ -10,13 +10,13 @@ function LoginForm() {
       <div className="w-full max-w-6xl grid lg:grid-cols-2 bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="hidden lg:flex flex-col justify-between bg-[#f1f6ff] p-12 relative overflow-hidden">
           <div className="relative z-10">
-              <div className="w-35 h-35 flex items-center justify-center overflow-hidden">
-                <img
-                  src={logo}
-                  alt="Career recommendation logo"
-                  className="w-full h-full object-contain"
-                />
-              </div>
+            <div className="w-35 h-35 flex items-center justify-center overflow-hidden">
+              <img
+                src={logo}
+                alt="Career recommendation logo"
+                className="w-full h-full object-contain"
+              />
+            </div>
 
             <div className=" max-w-md">
               <p className="text-sm font-semibold text-blue-600 mb-4">
@@ -54,8 +54,6 @@ function LoginForm() {
 
         <div className="p-6 sm:p-10 lg:p-12">
           <div className="max-w-md mx-auto h-full flex flex-col justify-center">
-           
-
             <div className="mb-8">
               <p className="text-sm font-semibold text-blue-600 mb-3">
                 SIGN IN TO YOUR ACCOUNT
@@ -66,7 +64,7 @@ function LoginForm() {
               </h2>
 
               <p className="mt-2 text-sm text-slate-500">
-                Sign in to continue your career journey with Startum.
+                Sign in to continue your career journey with Raahvi.
               </p>
             </div>
 

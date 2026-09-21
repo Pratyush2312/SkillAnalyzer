@@ -13,7 +13,7 @@ import {
   Target,
   X,
 } from "lucide-react";
-import logo from "../../assets/startum_logo.png";
+import logo from "../../assets/raahvi_logo.png";
 const features = [
   [
     BarChart3,
@@ -173,7 +173,7 @@ export default function Landing() {
         <nav
           className="mx-auto flex h-[72px] max-w-[1240px] items-center justify-between px-5 sm:px-8"
           aria-label="Main navigation">
-          <div className="w-35 h-35 flex items-center justify-center overflow-hidden shrink-0">
+          <div className="w-25 h-25 flex items-center justify-center overflow-hidden shrink-0">
             <img
               src={logo}
               alt="Career recommendation logo"
@@ -272,8 +272,9 @@ export default function Landing() {
                   you can grow into.
                 </em>
               </h1>
+
               <p className="mt-7 max-w-[525px] text-lg leading-8 text-[#526174]">
-                Startum connects what you know, what you enjoy, and what the
+                Raahvi connects what you know, what you enjoy, and what the
                 working world needs—so you can make your next career move with
                 intention.
               </p>
@@ -314,7 +315,7 @@ export default function Landing() {
               <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300">
                 Students are often asked to choose a path before they can see
                 how their skills, interests, and real opportunities fit
-                together. Startum makes that connection visible.
+                together. Raahvi makes that connection visible.
               </p>
             </div>
           </div>
@@ -323,7 +324,7 @@ export default function Landing() {
           <div className="mx-auto max-w-[1240px] px-5 py-16 sm:px-8 lg:py-24">
             <div className="grid gap-8 md:grid-cols-2">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1267e8]">
-                What Startum does
+                What Raahvi does
               </p>
               <h2 className="max-w-xl text-3xl font-bold leading-[1.02] tracking-[-0.055em] sm:text-5xl">
                 A more grounded way to map your future.
@@ -428,7 +429,7 @@ export default function Landing() {
             <Link to="/register">Get started</Link>
           </div>
           <p className="text-sm text-[#64748b]">
-            © {new Date().getFullYear()} Startum
+            © {new Date().getFullYear()} Raahvi
           </p>
         </div>
       </footer>

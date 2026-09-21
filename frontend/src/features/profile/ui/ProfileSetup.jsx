@@ -22,7 +22,7 @@ function ProfileSetup() {
         <div className="mb-8 flex items-center justify-between">
           <div className="inline-flex items-center gap-2">
             <span className="text-xl font-bold tracking-tight text-slate-900">
-              Startum
+              Raahvi
             </span>
           </div>
 

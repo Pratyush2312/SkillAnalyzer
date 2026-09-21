@@ -2,10 +2,11 @@ import { User, Mail, Lock, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import useAuthHook from "../hooks/useAuthHook";
-import logo from '../../../assets/startum_logo.png'
+import logo from "../../../assets/raahvi_logo.png";
 function RegisterForm() {
   const navigate = useNavigate();
-  const { register, handleSubmit, errors, getValues, handleRegister} = useAuthHook();
+  const { register, handleSubmit, errors, getValues, handleRegister } =
+    useAuthHook();
 
   return (
     <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center px-4 py-12">
@@ -60,7 +61,7 @@ function RegisterForm() {
             <div className="lg:hidden mb-10">
               <div className="inline-flex items-center gap-2">
                 <span className="text-xl font-bold tracking-tight text-slate-900">
-                  Startum
+                  Raahvi
                 </span>
               </div>
             </div>
@@ -71,7 +72,7 @@ function RegisterForm() {
               </p>
 
               <h2 className="text-3xl font-bold tracking-tight text-slate-900">
-                Welcome to Startum
+                Welcome to Raahvi
               </h2>
 
               <p className="mt-2 text-sm text-slate-500">

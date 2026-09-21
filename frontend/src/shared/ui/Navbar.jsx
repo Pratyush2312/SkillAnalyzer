@@ -1,7 +1,7 @@
 import { NavLink, Link } from "react-router";
 import { UserCircle, Menu, X, ChevronDown } from "lucide-react";
 import { useState } from "react";
-import logo from "../../assets/startum_logo.png";
+import logo from "../../assets/raahvi_logo.png";
 function Navbar({ user }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -154,7 +154,7 @@ function Navbar({ user }) {
                 key={item.path}
                 to={item.path}
                 onClick={() => setIsMenuOpen(false)}
-                className = { getNavLinkClass }>
+                className={getNavLinkClass}>
                 {item.label}
               </NavLink>
             ))}
