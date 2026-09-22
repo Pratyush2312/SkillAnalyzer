@@ -1,0 +1,53 @@
+import mongoose from "mongoose";
+
+const projectSchema = new mongoose.Schema(
+    {
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+
+        title: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+
+        description: {
+            type: String,
+            trim: true,
+        },
+
+        technologies: {
+            type: [String],
+            default: [],
+        },
+
+        githubUrl: {
+            type: String,
+            trim: true,
+        },
+
+        liveUrl: {
+            type: String,
+            trim: true,
+        },
+
+        skills: {
+            type: [String],
+            default: [],
+        },
+
+        difficulty: {
+            type: String,
+            enum: ["beginner", "intermediate", "advanced"],
+            default: "beginner",
+        },
+    },
+    {
+        timestamps: true,
+    }
+);
+
+export default mongoose.model("Project", projectSchema);

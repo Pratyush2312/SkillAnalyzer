@@ -1,5 +1,5 @@
 import Roadmap from "../models/RoadMap.js";
-
+import { getPersonalizedRoadmap } from "../services/personalizedRoadmapService.js";
 // Get all roadmaps
 export const getAllRoadmaps = async (req, res) => {
     try {
@@ -67,6 +67,38 @@ export const getRoadmapsByRole = async (req, res) => {
         res.status(500).json({
             success: false,
             message: "Failed to fetch roadmap by role",
+            error: error.message,
+        });
+    }
+};
+
+
+export const getPersonalizedRoadmapController = async (req, res) => {
+    try {
+        const { role } = req.query;
+
+        if (!role) {
+            return res.status(400).json({
+                success: false,
+                message: "Role is required",
+            });
+        }
+
+        const roadmap = await getPersonalizedRoadmap(
+            req.user._id,
+            role
+        );
+
+        res.status(200).json({
+            success: true,
+            data: roadmap,
+        });
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to generate personalized roadmap",
             error: error.message,
         });
     }
