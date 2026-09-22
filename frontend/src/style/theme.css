@@ -1,0 +1,35 @@
+:root {
+  /* Core Palette */
+  --color-black: #0F0F0F;
+  --color-charcoal: #2D2E2E;
+  --color-muted: #716969;
+  --color-rose: #BCABAE;
+  --color-white: #FBFBFB;
+
+  /* Semantic Colors */
+  --color-success: #7FAF8A;
+  --color-warning: #C5A46D;
+  --color-danger: #B87878;
+
+  /* Text */
+  --text-primary: #FBFBFB;
+  --text-secondary: #BCABAE;
+  --text-muted: #716969;
+  --text-dark: #0F0F0F;
+
+  /* Surfaces */
+  --surface-primary: #0F0F0F;
+  --surface-secondary: #2D2E2E;
+  --surface-muted: #716969;
+  --surface-light: #FBFBFB;
+
+  /* Borders */
+  --border-dark: rgba(251, 251, 251, 0.12);
+  --border-light: rgba(15, 15, 15, 0.12);
+
+  /* Effects */
+  --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.15);
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+}

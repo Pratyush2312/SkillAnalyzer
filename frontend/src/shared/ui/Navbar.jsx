@@ -1,161 +1,228 @@
 import { NavLink, Link } from "react-router";
-import { UserCircle, Menu, X, ChevronDown } from "lucide-react";
+import { UserCircle, Menu, X, ChevronDown, ArrowUpRight } from "lucide-react";
 import { useState } from "react";
 import logo from "../../assets/raahvi_logo.png";
+
 function Navbar({ user }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const navItems = [
-    { label: "Dashboard", path: "/dashboard" },
-    { label: "Skill Analysis", path: "/dashboard/skill-overview" },
+    { label: "Overview", path: "/dashboard" },
+    { label: "Skills", path: "/dashboard/skill-overview" },
     { label: "Careers", path: "/dashboard/career-recommendations" },
     { label: "Skill Gap", path: "/dashboard/skill-gap" },
   ];
 
-  const getNavLinkClass = ({ isActive }) =>
-    `text-sm font-medium transition-colors ${
-      isActive ? "text-blue-600" : "text-slate-600 hover:text-blue-600"
-    }`;
-
   const getInitials = (name = "") => {
-    return name
-      .trim()
-      .split(" ")
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((word) => word[0].toUpperCase())
-      .join("");
+    return (
+      name
+        .trim()
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((word) => word[0].toUpperCase())
+        .join("") || "S"
+    );
   };
 
   const userName = user?.name || "Student";
   const userEmail = user?.email || "";
-  const userInitials = user.name.charAt(0) || "S";
+  const userInitials = getInitials(userName);
+
+  const navLinkClass = ({ isActive }) =>
+    `relative py-2 text-xs font-medium uppercase tracking-[0.12em] transition-colors duration-300 ${
+      isActive
+        ? "text-[var(--text-primary)]"
+        : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+    }`;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white">
-      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="inline-flex items-center gap-2">
-          <div className="w-27 h-27 flex items-center justify-center overflow-hidden">
+    <header className="sticky top-0 z-50 w-full border-b border-[var(--border-dark)] bg-[var(--surface-primary)]/95 backdrop-blur-xl">
+      <nav className="mx-auto flex h-[76px] max-w-[1500px] items-center justify-between px-5 sm:px-8 lg:px-12">
+        {/* LOGO */}
+        <Link
+          to="/dashboard"
+          className="group flex items-center"
+          onClick={() => {
+            setIsProfileOpen(false);
+            setIsMenuOpen(false);
+          }}>
+          <div className="relative flex h-12 w-28 items-center justify-start overflow-hidden">
             <img
               src={logo}
-              alt="Career recommendation logo"
-              className="w-full h-full object-contain"
+              alt="RAAHVI"
+              className="h-full w-full object-contain object-left transition-transform duration-300 group-hover:scale-[1.03]"
             />
           </div>
         </Link>
 
-        {/* Desktop Navigation */}
+        {/* DESKTOP NAVIGATION */}
         <div className="hidden items-center gap-8 md:flex">
           {navItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               end={item.path === "/dashboard"}
-              className={getNavLinkClass}>
-              {item.label}
+              className={navLinkClass}>
+              {({ isActive }) => (
+                <span className="group relative">
+                  {item.label}
+
+                  <span
+                    className={`absolute -bottom-2 left-0 h-px bg-[var(--color-rose)] transition-all duration-300 ${
+                      isActive ? "w-full" : "w-0 group-hover:w-full"
+                    }`}
+                  />
+                </span>
+              )}
             </NavLink>
           ))}
         </div>
 
-        {/* Desktop User Section */}
-        <div className="relative hidden items-center md:flex">
+        {/* DESKTOP PROFILE */}
+        <div className="relative hidden md:block">
           <button
             type="button"
-            onClick={() => setIsProfileOpen(!isProfileOpen)}
-            className="flex items-center gap-3 rounded-xl px-2 py-1.5 transition hover:bg-slate-50">
+            onClick={() => setIsProfileOpen((prev) => !prev)}
+            className="group flex items-center gap-3 rounded-full border border-[var(--border-dark)] bg-[var(--surface-secondary)] py-1.5 pl-1.5 pr-3 transition-all duration-300 hover:border-[var(--color-rose)] cursor-pointer">
             {/* Avatar */}
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-rose)] text-xs font-semibold text-[var(--text-dark)]">
               {userInitials}
             </div>
-            <div className="hidden text-left lg:block">
-              <p className="max-w-32 truncate text-sm font-semibold text-slate-900">
+
+            <div className="hidden max-w-32 text-left lg:block">
+              <p className="truncate text-xs font-medium text-[var(--text-primary)]">
                 {userName}
               </p>
 
               {userEmail && (
-                <p className="max-w-40 truncate text-xs text-slate-500">
+                <p className="mt-0.5 truncate text-[10px] text-[var(--text-muted)]">
                   {userEmail}
                 </p>
               )}
             </div>
 
             <ChevronDown
-              size={16}
-              className={`text-slate-400 transition-transform ${
+              size={14}
+              className={`text-[var(--text-muted)] transition-transform duration-300 ${
                 isProfileOpen ? "rotate-180" : ""
               }`}
             />
           </button>
 
-          {/* Profile Dropdown */}
+          {/* PROFILE DROPDOWN */}
           {isProfileOpen && (
-            <div className="absolute right-0 top-14 w-56 rounded-xl border border-slate-200 bg-white p-2 shadow-lg">
-              <div className="border-b border-slate-100 px-3 py-3">
-                <p className="truncate text-sm font-semibold text-slate-900">
-                  {userName}
-                </p>
+            <div className="absolute right-0 top-[58px] w-60 overflow-hidden border border-[var(--border-dark)] bg-[var(--surface-secondary)] shadow-[var(--shadow-soft)]">
+              <div className="border-b border-[var(--border-dark)] p-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--color-rose)] text-xs font-semibold text-[var(--text-dark)]">
+                    {userInitials}
+                  </div>
 
-                {userEmail && (
-                  <p className="mt-1 truncate text-xs text-slate-500">
-                    {userEmail}
-                  </p>
-                )}
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium text-[var(--text-primary)]">
+                      {userName}
+                    </p>
+
+                    {userEmail && (
+                      <p className="mt-1 truncate text-xs text-[var(--text-muted)]">
+                        {userEmail}
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
 
-              <NavLink
-                to="/dashboard/view-profile"
-                onClick={() => setIsProfileOpen(false)}
-                className="mt-1 flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-blue-600">
-                <UserCircle className="h-4 w-4" />
-                View profile
-              </NavLink>
+              <div className="p-2">
+                <NavLink
+                  to="/dashboard/view-profile"
+                  onClick={() => setIsProfileOpen(false)}
+                  className="group flex items-center justify-between px-3 py-3 text-sm text-[var(--text-secondary)] transition-colors duration-300 hover:bg-[var(--surface-primary)] hover:text-[var(--text-primary)]">
+                  <span className="flex items-center gap-3">
+                    <UserCircle size={16} />
+                    View profile
+                  </span>
+
+                  <ArrowUpRight
+                    size={14}
+                    className="text-[var(--text-muted)] transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  />
+                </NavLink>
+
+                <button
+                  type="button"
+                  onClick={() => setIsProfileOpen(false)}
+                  className="flex w-full items-center gap-3 px-3 py-3 text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--text-primary)] cursor-pointer">
+                  Close
+                </button>
+              </div>
             </div>
           )}
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* MOBILE MENU */}
         <button
           type="button"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="rounded-lg p-2 text-slate-600 transition hover:bg-slate-100 md:hidden"
+          onClick={() => setIsMenuOpen((prev) => !prev)}
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border-dark)] text-[var(--text-primary)] transition-colors hover:border-[var(--color-rose)] md:hidden cursor-pointer"
           aria-label="Toggle navigation menu">
-          {isMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
+          {isMenuOpen ? <X size={19} /> : <Menu size={19} />}
         </button>
       </nav>
 
-      {/* Mobile Navigation */}
+      {/* MOBILE NAVIGATION */}
       {isMenuOpen && (
-        <div className="border-t border-slate-200 bg-white px-4 py-4 md:hidden">
-          {/* Mobile User Info */}
-          <div className="mb-3 flex items-center gap-3 border-b border-slate-100 px-2 pb-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700">
+        <div className="border-t border-[var(--border-dark)] bg-[var(--surface-primary)] px-5 py-6 md:hidden">
+          {/* USER */}
+          <div className="mb-6 flex items-center gap-3 border-b border-[var(--border-dark)] pb-6">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-rose)] text-sm font-semibold text-[var(--text-dark)]">
               {userInitials}
             </div>
 
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-slate-900">
+              <p className="truncate text-sm font-medium text-[var(--text-primary)]">
                 {userName}
               </p>
 
               {userEmail && (
-                <p className="truncate text-xs text-slate-500">{userEmail}</p>
+                <p className="mt-1 truncate text-xs text-[var(--text-muted)]">
+                  {userEmail}
+                </p>
               )}
             </div>
           </div>
 
-          <div className="flex flex-col gap-2">
-            {navItems.map((item) => (
+          {/* LINKS */}
+          <div className="flex flex-col">
+            {navItems.map((item, index) => (
               <NavLink
                 key={item.path}
                 to={item.path}
+                end={item.path === "/dashboard"}
                 onClick={() => setIsMenuOpen(false)}
-                className={getNavLinkClass}>
-                {item.label}
+                className={({ isActive }) =>
+                  `flex items-center justify-between border-b border-[var(--border-dark)] py-5 text-sm transition-colors ${
+                    isActive
+                      ? "text-[var(--color-rose)]"
+                      : "text-[var(--text-secondary)]"
+                  }`
+                }>
+                {({ isActive }) => (
+                  <>
+                    <span className="flex items-center gap-4">
+                      <span className="text-[10px] text-[var(--text-muted)]">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+
+                      <span className="uppercase tracking-[0.15em]">
+                        {item.label}
+                      </span>
+                    </span>
+
+                    <ArrowUpRight size={15} />
+                  </>
+                )}
               </NavLink>
             ))}
 
@@ -163,14 +230,19 @@ function Navbar({ user }) {
               to="/dashboard/view-profile"
               onClick={() => setIsMenuOpen(false)}
               className={({ isActive }) =>
-                `flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
+                `flex items-center justify-between py-5 text-sm ${
                   isActive
-                    ? "bg-blue-50 text-blue-600"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
+                    ? "text-[var(--color-rose)]"
+                    : "text-[var(--text-secondary)]"
                 }`
               }>
-              <UserCircle className="h-5 w-5" />
-              Profile
+              <span className="flex items-center gap-4">
+                <UserCircle size={17} />
+
+                <span className="uppercase tracking-[0.15em]">Profile</span>
+              </span>
+
+              <ArrowUpRight size={15} />
             </NavLink>
           </div>
         </div>

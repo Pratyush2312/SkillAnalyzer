@@ -1,377 +1,451 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
+import { useNavigate } from "react-router";
 import {
   ArrowUpRight,
+  Brain,
   BriefcaseBusiness,
   ChevronRight,
-  ClipboardCheck,
+  CircleUserRound,
   Compass,
-  FileSearch,
   GraduationCap,
-  Pencil,
+  Radar,
+  Sparkles,
   Target,
   TrendingUp,
 } from "lucide-react";
-import { useNavigate } from "react-router";
+
 import { CareerContext } from "../../../context/MyCareer";
-import DashboardSkeleton from "./DashboardSkeleton";
+
+const getInitials = (name = "") => {
+  return (
+    name
+      .trim()
+      .split(" ")
+      .slice(0, 2)
+      .map((word) => word[0])
+      .join("")
+      .toUpperCase() || "U"
+  );
+};
+
+const getSkillStatus = (proficiency = 0) => {
+  if (proficiency >= 70) return "Strong";
+  if (proficiency >= 40) return "Developing";
+  return "Needs work";
+};
+
+const getSkillStatusClass = (proficiency = 0) => {
+  if (proficiency >= 70) {
+    return "bg-[rgba(127,175,138,0.12)] text-[var(--color-success)]";
+  }
+
+  if (proficiency >= 40) {
+    return "bg-[rgba(197,164,109,0.12)] text-[var(--color-warning)]";
+  }
+
+  return "bg-[rgba(184,120,120,0.12)] text-[var(--color-danger)]";
+};
+
+const ActionCard = ({ icon: Icon, title, description, onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      className="group w-full border border-[var(--border-dark)] bg-[var(--surface-secondary)] p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-rose)]">
+      <div className="mb-8 flex items-start justify-between">
+        <div className="flex h-10 w-10 items-center justify-center border border-[var(--border-dark)] bg-[var(--surface-primary)]">
+          <Icon size={18} className="text-[var(--color-rose)]" />
+        </div>
+
+        <ArrowUpRight
+          size={18}
+          className="text-[var(--text-muted)] transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[var(--color-rose)]"
+        />
+      </div>
+
+      <h3 className="text-lg font-medium text-[var(--text-primary)]">
+        {title}
+      </h3>
+
+      <p className="mt-2 max-w-sm text-sm leading-6 text-[var(--text-muted)]">
+        {description}
+      </p>
+    </button>
+  );
+};
+
+const StatCard = ({ label, value, description }) => {
+  return (
+    <div className="border-l border-[var(--border-dark)] pl-5">
+      <p className="text-xs uppercase tracking-[0.16em] text-[var(--text-muted)]">
+        {label}
+      </p>
+
+      <p className="mt-2 text-3xl font-medium tracking-tight text-[var(--text-primary)]">
+        {value}
+      </p>
+
+      {description && (
+        <p className="mt-1 text-xs text-[var(--text-muted)]">{description}</p>
+      )}
+    </div>
+  );
+};
+
+const SkillRow = ({ skill }) => {
+  const proficiency = Math.round(skill.proficiency || 0);
+
+  return (
+    <div className="group border-b border-[var(--border-dark)] py-4 last:border-b-0">
+      <div className="flex items-center justify-between gap-4">
+        <div className="min-w-0">
+          <p className="truncate text-sm font-medium text-[var(--text-primary)]">
+            {skill.name}
+          </p>
+
+          <p className="mt-1 text-xs text-[var(--text-muted)]">
+            {skill.evidenceCount || 0} evidence{" "}
+            {skill.evidenceCount === 1 ? "source" : "sources"}
+          </p>
+        </div>
+
+        <div className="flex shrink-0 items-center gap-3">
+          <span
+            className={`px-2.5 py-1 text-[10px] uppercase tracking-[0.12em] ${getSkillStatusClass(
+              proficiency,
+            )}`}>
+            {getSkillStatus(proficiency)}
+          </span>
+
+          <span className="w-10 text-right text-sm font-medium text-[var(--color-rose)]">
+            {proficiency}
+          </span>
+        </div>
+      </div>
+
+      <div className="mt-3 h-1 overflow-hidden bg-[var(--color-charcoal)]">
+        <div
+          className="h-full bg-[var(--color-rose)] transition-all duration-700"
+          style={{
+            width: `${Math.min(proficiency, 100)}%`,
+          }}
+        />
+      </div>
+    </div>
+  );
+};
 
 const Dashboard = () => {
-  const { student, loading } = useContext(CareerContext);
-
-  function capitalizeWord(word) {
-    if (!word || typeof word !== "string") {
-      return "Not available";
-    }
-
-    return word
-      .split(" ")
-      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-      .join(" ");
-  }
-
-  function getYearLabel(year) {
-    const numericYear = Number(year);
-
-    if (!Number.isFinite(numericYear)) {
-      return "Not available";
-    }
-    if (numericYear === 5) return "Graduate";
-    if (numericYear === 1) return "1st year";
-    if (numericYear === 2) return "2nd year";
-    if (numericYear === 3) return "3rd year";
-
-  
-  }
   const navigate = useNavigate();
+
+  const { student, skillIntelligence, loading, skillLoading } =
+    useContext(CareerContext);
+
   if (loading) {
-    return <DashboardSkeleton />;
+    return (
+      <div className="min-h-screen bg-[var(--surface-primary)] px-6 py-12 text-[var(--text-primary)]">
+        <div className="mx-auto max-w-7xl animate-pulse">
+          <div className="h-4 w-32 bg-[var(--color-charcoal)]" />
+          <div className="mt-6 h-14 w-2/3 bg-[var(--color-charcoal)]" />
+          <div className="mt-4 h-5 w-1/2 bg-[var(--color-charcoal)]" />
+
+          <div className="mt-16 grid gap-4 md:grid-cols-3">
+            <div className="h-32 bg-[var(--color-charcoal)]" />
+            <div className="h-32 bg-[var(--color-charcoal)]" />
+            <div className="h-32 bg-[var(--color-charcoal)]" />
+          </div>
+        </div>
+      </div>
+    );
   }
+
+  const name = student?.name || "there";
+
+  const summary = skillIntelligence?.summary || {};
+
+  const skills = Array.isArray(skillIntelligence?.skills)
+    ? skillIntelligence.skills
+    : [];
+
+  const sortedSkills = [...skills]
+    .sort((a, b) => (b.proficiency || 0) - (a.proficiency || 0))
+    .slice(0, 5);
+
+  const totalSkills = summary.totalSkills ?? skills.length ?? 0;
+
+  const strongSkills =
+    summary.strongSkills ??
+    skills.filter((skill) => (skill.proficiency || 0) >= 70).length;
+
+  const developingSkills =
+    summary.developingSkills ??
+    skills.filter(
+      (skill) =>
+        (skill.proficiency || 0) >= 40 && (skill.proficiency || 0) < 70,
+    ).length;
+
+  const weakSkills =
+    summary.weakSkills ??
+    skills.filter((skill) => (skill.proficiency || 0) < 40).length;
+
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
-      <main className="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-10">
-        <section className="flex flex-col justify-between gap-5 border-b border-slate-200 pb-8 sm:flex-row sm:items-end">
-          <div>
-            <p className="mb-3 text-sm font-medium uppercase tracking-[0.14em] text-indigo-600">
-              Student Dashboard
-            </p>
-
-            <h1 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
-              Welcome back, {student?.name || "User"}.
-            </h1>
-
-            <p className="mt-3 max-w-xl text-sm leading-6 text-slate-500">
-              Keep track of your skills and discover the career paths that fit
-              you best.
-            </p>
-          </div>
-
-          <button
-            onClick={() => navigate("/dashboard/edit-profile")}
-            type="button"
-            className="inline-flex w-fit items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-indigo-400 hover:text-indigo-600 cursor-pointer">
-            <Pencil size={15} />
-            Edit profile
-          </button>
-        </section>
-
-        <section className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="border border-slate-200 bg-white p-6 sm:p-7">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm font-semibold text-slate-900">
-                  Your career direction
-                </p>
-
-                <p className="mt-2 text-sm text-slate-500">
-                  Based on your current profile
-                </p>
-              </div>
-
-              <div className="text-indigo-600">
-                <Compass size={22} strokeWidth={1.8} />
-              </div>
-            </div>
-
-            <div className="mt-9">
-              <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
-                Primary interest
+    <main className="min-h-screen bg-[var(--surface-primary)] text-[var(--text-primary)]">
+      <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 lg:px-10">
+        {/* Header */}
+        <section className="border-b border-[var(--border-dark)] pb-12">
+          <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+            <div>
+              <p className="mb-5 flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-[var(--color-rose)]">
+                <Sparkles size={13} />
+                Career intelligence
               </p>
 
-              <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950">
-                {student?.career_interest || "Not available"}
-              </h2>
+              <h1 className="max-w-4xl text-4xl font-medium tracking-tight text-[var(--text-primary)] sm:text-5xl lg:text-6xl">
+                Welcome back,{" "}
+                <span className="text-[var(--color-rose)]">
+                  {name.split(" ")[0]}.
+                </span>
+              </h1>
 
-              <p className="mt-3 max-w-md text-sm leading-6 text-slate-500">
-                Explore suitable roles, identify missing skills, and build a
-                focused career roadmap.
+              <p className="mt-5 max-w-2xl text-base leading-7 text-[var(--text-secondary)]">
+                Your career profile is becoming a living picture of what you
+                know, what you can prove, and where you can go next.
               </p>
             </div>
 
             <button
-              onClick={() => navigate("/dashboard/career-recommendations")}
-              type="button"
-              className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 transition hover:text-indigo-700 cursor-pointer">
-              View career recommendations
-              <ArrowUpRight size={16} />
+              onClick={() => navigate("/dashboard/edit-profile")}
+              className="flex w-fit items-center gap-3 border border-[var(--border-dark)] px-4 py-3 text-sm text-[var(--text-secondary)] transition hover:border-[var(--color-rose)] hover:text-[var(--text-primary)]">
+              <div className="flex h-8 w-8 items-center justify-center bg-[var(--color-rose)] text-[var(--text-dark)]">
+                {getInitials(name)}
+              </div>
+
+              <span>Edit profile</span>
+
+              <ChevronRight size={15} />
             </button>
           </div>
+        </section>
 
-          <div className="border border-slate-200 bg-white p-6 sm:p-7">
-            <div className="flex items-start justify-between">
+        {/* Intelligence Stats */}
+        <section className="grid gap-8 border-b border-[var(--border-dark)] py-10 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard
+            label="Skills identified"
+            value={skillLoading ? "—" : totalSkills}
+            description="Across your current evidence"
+          />
+
+          <StatCard
+            label="Strong skills"
+            value={skillLoading ? "—" : strongSkills}
+            description="Proficiency of 70 or above"
+          />
+
+          <StatCard
+            label="Developing"
+            value={skillLoading ? "—" : developingSkills}
+            description="Skills between 40 and 69"
+          />
+
+          <StatCard
+            label="Needs work"
+            value={skillLoading ? "—" : weakSkills}
+            description="Skills below 40"
+          />
+        </section>
+
+        {/* Main Intelligence Area */}
+        <section className="grid gap-8 py-10 lg:grid-cols-[1.4fr_0.8fr]">
+          {/* Skill Intelligence */}
+          <div className="border border-[var(--border-dark)] bg-[var(--surface-secondary)] p-6 sm:p-8">
+            <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-start">
               <div>
-                <p className="text-sm font-semibold text-slate-900">
-                  Skill overview
-                </p>
+                <div className="flex items-center gap-3">
+                  <Radar size={18} className="text-[var(--color-rose)]" />
 
-                <p className="mt-2 text-sm text-slate-500">
-                  Your current self-assessment
+                  <p className="text-xs uppercase tracking-[0.16em] text-[var(--text-muted)]">
+                    Skill intelligence
+                  </p>
+                </div>
+
+                <h2 className="mt-4 text-2xl font-medium tracking-tight">
+                  Your current capability signal.
+                </h2>
+
+                <p className="mt-2 max-w-xl text-sm leading-6 text-[var(--text-muted)]">
+                  Skills are built from the evidence available in your profile
+                  rather than a single self-rating.
                 </p>
               </div>
 
-              <TrendingUp
-                size={22}
-                strokeWidth={1.8}
-                className="text-indigo-600"
-              />
+              <button
+                onClick={() => navigate("/dashboard/skill-overview")}
+                className="flex w-fit items-center gap-2 text-sm text-[var(--color-rose)] transition hover:text-[var(--text-primary)]">
+                Explore skills
+                <ArrowUpRight size={15} />
+              </button>
             </div>
 
-            <div className="mt-8 space-y-7">
-              <div>
-                <div className="mb-3 flex items-center justify-between">
-                  <span className="text-sm text-slate-600">
-                    Technical skills
-                  </span>
-
-                  <span className="text-sm font-semibold text-slate-950">
-                    {student?.technical_rating}
-                    <span className="font-normal text-slate-400">/ 5</span>
-                  </span>
+            <div className="mt-8">
+              {skillLoading ? (
+                <div className="space-y-5">
+                  {[1, 2, 3, 4].map((item) => (
+                    <div key={item} className="animate-pulse">
+                      <div className="h-4 w-32 bg-[var(--color-charcoal)]" />
+                      <div className="mt-3 h-1 bg-[var(--color-charcoal)]" />
+                    </div>
+                  ))}
                 </div>
-
-                <div className="h-1.5 bg-slate-100">
-                  <div
-                    className="h-full bg-indigo-600 transition-all duration-500"
-                    style={{
-                      width: `${(student?.technical_rating / 5) * 100}%`,
-                    }}
+              ) : sortedSkills.length > 0 ? (
+                sortedSkills.map((skill) => (
+                  <SkillRow key={skill._id || skill.name} skill={skill} />
+                ))
+              ) : (
+                <div className="border border-dashed border-[var(--border-dark)] p-8 text-center">
+                  <Brain
+                    size={24}
+                    className="mx-auto text-[var(--color-rose)]"
                   />
+
+                  <p className="mt-4 text-sm text-[var(--text-secondary)]">
+                    No skill intelligence has been generated yet.
+                  </p>
+
+                  <button
+                    onClick={() => navigate("/dashboard/edit-profile")}
+                    className="mt-4 text-sm text-[var(--color-rose)]">
+                    Complete your profile →
+                  </button>
                 </div>
+              )}
+            </div>
+          </div>
+
+          {/* Profile Snapshot */}
+          <div className="border border-[var(--border-dark)] p-6 sm:p-8">
+            <div className="flex items-center gap-3">
+              <CircleUserRound size={18} className="text-[var(--color-rose)]" />
+
+              <p className="text-xs uppercase tracking-[0.16em] text-[var(--text-muted)]">
+                Profile snapshot
+              </p>
+            </div>
+
+            <div className="mt-8 space-y-6">
+              <div>
+                <p className="text-xs text-[var(--text-muted)]">
+                  Current course
+                </p>
+
+                <p className="mt-1 text-sm text-[var(--text-primary)]">
+                  {student?.current_course || "Not specified"}
+                </p>
               </div>
 
               <div>
-                <div className="mb-3 flex items-center justify-between">
-                  <span className="text-sm text-slate-600">Soft skills</span>
+                <p className="text-xs text-[var(--text-muted)]">
+                  Academic year
+                </p>
 
-                  <span className="text-sm font-semibold text-slate-950">
-                    {student?.soft_skill_rating}{" "}
-                    <span className="font-normal text-slate-400">/ 5</span>
-                  </span>
-                </div>
+                <p className="mt-1 text-sm text-[var(--text-primary)]">
+                  {student?.year ? `Year ${student.year}` : "Not specified"}
+                </p>
+              </div>
 
-                <div className="h-1.5 bg-slate-100">
-                  <div
-                    className="h-full bg-indigo-600 transition-all duration-500"
-                    style={{
-                      width: `${(student?.soft_skill_rating / 5) * 100}%`,
-                    }}
-                  />
-                </div>
+              <div>
+                <p className="text-xs text-[var(--text-muted)]">
+                  Career interest
+                </p>
+
+                <p className="mt-1 text-sm text-[var(--text-primary)]">
+                  {student?.career_interest || "Not specified"}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-xs text-[var(--text-muted)]">Projects</p>
+
+                <p className="mt-1 text-sm text-[var(--text-primary)]">
+                  {Array.isArray(student?.projects)
+                    ? student.projects.length
+                    : student?.project_count || 0}
+                </p>
               </div>
             </div>
 
             <button
-              onClick={() => navigate("/dashboard/skill-overview")}
-              type="button"
-              className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 transition hover:text-indigo-700 cursor-pointer">
-              Analyze my skills
+              onClick={() => navigate("/dashboard/edit-profile")}
+              className="mt-10 flex w-full items-center justify-between border-t border-[var(--border-dark)] pt-5 text-sm text-[var(--text-secondary)] transition hover:text-[var(--color-rose)]">
+              Update profile
               <ArrowUpRight size={16} />
             </button>
           </div>
         </section>
 
-        <section className="mt-8">
-          <div className="mb-5">
-            <h2 className="text-xl font-semibold tracking-tight text-slate-950">
-              Continue your career journey
+        {/* Actions */}
+        <section className="border-t border-[var(--border-dark)] pt-10">
+          <div className="mb-7">
+            <p className="text-xs uppercase tracking-[0.16em] text-[var(--text-muted)]">
+              Continue exploring
+            </p>
+
+            <h2 className="mt-3 text-2xl font-medium tracking-tight">
+              Turn your profile into a plan.
             </h2>
-
-            <p className="mt-2 text-sm text-slate-500">
-              Choose an action to move forward.
-            </p>
           </div>
 
-          <div className="grid border border-slate-200 bg-white sm:grid-cols-2 lg:grid-cols-3">
-            <button
-              onClick={() => navigate("/dashboard/skill-overview")}
-              type="button"
-              className="group border-b border-slate-200 p-5 text-left transition hover:bg-slate-50 sm:border-r lg:border-b-0 cursor-pointer">
-              <ClipboardCheck
-                size={22}
-                strokeWidth={1.8}
-                className="text-indigo-600"
-              />
+          <div className="grid gap-4 md:grid-cols-3">
+            <ActionCard
+              icon={Target}
+              title="Find your skill gaps"
+              description="Compare your current capabilities against the requirements of a target career."
+              onClick={() => navigate("/dashboard/skill-gap")}
+            />
 
-              <h3 className="mt-5 text-sm font-semibold text-slate-900">
-                Skill analysis
-              </h3>
-
-              <p className="mt-2 text-sm leading-5 text-slate-500">
-                Understand your current strengths.
-              </p>
-
-              <ChevronRight
-                size={17}
-                className="mt-5 text-slate-400 transition group-hover:translate-x-1 group-hover:text-indigo-600"
-              />
-            </button>
-
-            <button
+            <ActionCard
+              icon={BriefcaseBusiness}
+              title="Explore career paths"
+              description="See the career signals generated from your profile and current skill set."
               onClick={() => navigate("/dashboard/career-recommendations")}
-              type="button"
-              className="group border-b border-slate-200 p-5 text-left transition hover:bg-slate-50 lg:border-b-0 lg:border-r cursor-pointer">
-              <GraduationCap
-                size={22}
-                strokeWidth={1.8}
-                className="text-indigo-600"
-              />
+            />
 
-              <h3 className="mt-5 text-sm font-semibold text-slate-900">
-                Career recommendations
-              </h3>
-
-              <p className="mt-2 text-sm leading-5 text-slate-500">
-                Find career paths matching your profile.
-              </p>
-
-              <ChevronRight
-                size={17}
-                className="mt-5 text-slate-400 transition group-hover:translate-x-1 group-hover:text-indigo-600"
-              />
-            </button>
-
-            <button
-              onClick={() => navigate("/dashboard/skill-gap")}
-              type="button"
-              className="group border-b border-slate-200 p-5 text-left transition hover:bg-slate-50 sm:border-r lg:border-b-0 cursor-pointer">
-              <Target size={22} strokeWidth={1.8} className="text-indigo-600" />
-
-              <h3 className="mt-5 text-sm font-semibold text-slate-900">
-                Skill gap analysis
-              </h3>
-
-              <p className="mt-2 text-sm leading-5 text-slate-500">
-                Identify skills needed for your goals.
-              </p>
-
-              <ChevronRight
-                size={17}
-                className="mt-5 text-slate-400 transition group-hover:translate-x-1 group-hover:text-indigo-600"
-              />
-            </button>
-
-            {/* <button
-              type="button"
-              className="group p-5 text-left transition hover:bg-slate-50">
-              <BriefcaseBusiness
-                size={22}
-                strokeWidth={1.8}
-                className="text-indigo-600"
-              />
-
-              <h3 className="mt-5 text-sm font-semibold text-slate-900">
-                Career recommendations
-              </h3>
-
-              <p className="mt-2 text-sm leading-5 text-slate-500">
-                Explore jobs related to your skills.
-              </p>
-
-              <ChevronRight
-                size={17}
-                className="mt-5 text-slate-400 transition group-hover:translate-x-1 group-hover:text-indigo-600"
-              />
-            </button> */}
+            <ActionCard
+              icon={GraduationCap}
+              title="Build your roadmap"
+              description="Turn missing capabilities into a structured learning journey."
+              onClick={() => navigate("/dashboard/roadmap")}
+            />
           </div>
         </section>
-        <section className="mt-8 grid gap-6 md:grid-cols-2">
-          <div className="border border-slate-200 bg-white p-6">
-            <div className="flex items-center gap-3">
-              <FileSearch
-                size={20}
-                strokeWidth={1.8}
-                className="text-indigo-600"
-              />
 
-              <h2 className="text-sm font-semibold text-slate-900">
-                Next recommended step
+        {/* Next Step */}
+        <section className="mt-10 border border-[var(--border-dark)] bg-[var(--color-rose)] p-7 text-[var(--text-dark)] sm:p-10">
+          <div className="flex flex-col justify-between gap-8 md:flex-row md:items-center">
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-2 text-xs uppercase tracking-[0.16em] opacity-70">
+                <TrendingUp size={14} />
+                Next step
+              </div>
+
+              <h2 className="mt-4 text-3xl font-medium tracking-tight">
+                Make your skill profile more complete.
               </h2>
-            </div>
 
-            <p className="mt-5 text-base font-medium text-slate-900">
-              Review your skill gaps for {student?.career_interest}.
-            </p>
-
-            <p className="mt-2 text-sm leading-6 text-slate-500">
-              Knowing what to improve will help you prepare for relevant roles
-              more effectively.
-            </p>
-
-            <button
-              onClick={() => navigate("/dashboard/skill-gap")}
-              type="button"
-              className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700 cursor-pointer">
-              View skill gaps
-              <ArrowUpRight size={16} />
-            </button>
-          </div>
-
-          <div className="border border-slate-200 bg-white p-6">
-            <div className="flex items-center gap-3">
-              <BriefcaseBusiness
-                size={20}
-                strokeWidth={1.8}
-                className="text-indigo-600"
-              />
-
-              <h2 className="text-sm font-semibold text-slate-900">
-                Profile summary
-              </h2>
-            </div>
-
-            <div className="mt-5 space-y-3 text-sm">
-              <div className="flex justify-between gap-4">
-                <span className="text-slate-500">Academic year</span>
-                <span className="font-medium text-slate-900">
-                  {getYearLabel(student?.year)}
-                </span>
-              </div>
-
-              <div className="flex justify-between gap-4">
-                <span className="text-slate-500">Projects completed</span>
-                <span className="font-medium text-slate-900">
-                  {student?.projects ? "Yes" : "No"}
-                </span>
-              </div>
-
-              <div className="flex justify-between gap-4">
-                <span className="text-slate-500">Assessment method</span>
-                <span className="font-medium text-slate-900">
-                  {capitalizeWord(student?.method?.split("_").join(" "))}
-                </span>
-              </div>
+              <p className="mt-3 text-sm leading-6 opacity-75">
+                Add projects, assessments and certifications so your skill
+                intelligence is based on stronger evidence.
+              </p>
             </div>
 
             <button
-              onClick={() => navigate("/dashboard/view-profile")}
-              type="button"
-              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700 cursor-pointer">
-              View profile
+              onClick={() => navigate("/dashboard/edit-profile")}
+              className="flex w-fit shrink-0 items-center gap-2 bg-[var(--color-black)] px-5 py-3 text-sm text-[var(--color-white)] transition hover:bg-[var(--color-charcoal)]">
+              Update profile
               <ArrowUpRight size={16} />
             </button>
           </div>
         </section>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 };
 
