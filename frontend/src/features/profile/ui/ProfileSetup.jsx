@@ -7,181 +7,272 @@ import {
   Target,
   MessageSquare,
   ClipboardList,
+  FileText,
+  GitBranchPlus,
+  Award,
+  ClipboardCheck,
+  Database,
   ArrowRight,
+  CheckCircle2,
+  Upload,
+  Plus,
 } from "lucide-react";
+
 import useProfileHook from "../hooks/useProfileHook";
-import { useNavigate } from "react-router";
 
 function ProfileSetup() {
   const { register, errors, handleSubmit, onSubmit } = useProfileHook();
-  const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-8 flex items-center justify-between">
-          <div className="inline-flex items-center gap-2">
-            <span className="text-xl font-bold tracking-tight text-slate-900">
-              Raahvi
+    <div className="min-h-screen bg-[var(--surface-primary)] px-4 py-8 text-[var(--text-primary)] sm:px-6 lg:px-8">
+      <div className="flex w-full flex-col gap-8">
+        {/* Header */}
+        <header className="flex items-center justify-between border-b border-[var(--border-dark)] pb-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border-dark)]">
+              <span className="text-xs font-medium text-[var(--color-rose)]">
+                R
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-0.5">
+              <span className="text-lg font-medium tracking-[-0.03em]">
+                RAAHVI
+              </span>
+
+              <span className="text-[9px] uppercase tracking-[0.2em] text-[var(--text-muted)]">
+                Skill Intelligence
+              </span>
+            </div>
+          </div>
+
+          <span className="text-[9px] uppercase tracking-[0.2em] text-[var(--text-muted)]">
+            Profile setup
+          </span>
+        </header>
+
+        {/* Progress */}
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <span className="text-[9px] uppercase tracking-[0.2em] text-[var(--color-rose)]">
+              Build your profile
+            </span>
+
+            <span className="text-[10px] text-[var(--text-muted)]">
+              01 — 04
             </span>
           </div>
 
-          <span className="text-sm text-slate-500">Profile setup</span>
-        </div>
-
-        <div className="mb-8">
-          <div className="h-2 overflow-hidden rounded-full bg-slate-200">
-            <div className="h-full w-full rounded-full bg-blue-600" />
+          <div className="h-px w-full bg-[var(--border-dark)]">
+            <div className="h-px w-1/4 bg-[var(--color-rose)]" />
           </div>
         </div>
 
+        {/* Main */}
         <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
-          <aside className="h-fit rounded-2xl border border-slate-200 bg-[#f1f6ff] p-6 lg:sticky lg:top-8">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
-              <UserRound className="h-6 w-6" />
+          {/* Sidebar */}
+          <aside className="flex h-fit flex-col gap-8 rounded-[var(--radius-lg)] border border-[var(--border-dark)] bg-[var(--surface-secondary)] p-6 lg:sticky lg:top-8">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--border-dark)]">
+              <Database size={18} className="text-[var(--color-rose)]" />
             </div>
 
-            <h1 className="mt-6 text-2xl font-bold tracking-tight text-slate-900">
-              Build your profile
-            </h1>
+            <div className="flex flex-col gap-3">
+              <h1 className="text-2xl font-medium tracking-[-0.04em]">
+                Build your
+                <br />
+                <span className="text-[var(--color-rose)]">
+                  RAAHVI profile.
+                </span>
+              </h1>
 
-            <p className="mt-3 text-sm leading-relaxed text-slate-600">
-              Share your academic background, skills, interests, and career
-              goals to help SkillMatch understand your profile.
-            </p>
+              <p className="text-sm leading-6 text-[var(--text-muted)]">
+                Bring together your academic background, skills, projects and
+                experience so RAAHVI can build a unified view of your
+                capabilities.
+              </p>
+            </div>
 
-            <div className="mt-8 space-y-5">
-              <div className="flex items-start gap-3">
-                <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">
-                  1
+            {/* Steps */}
+            <div className="flex flex-col">
+              {[
+                {
+                  number: "01",
+                  title: "About you",
+                  description: "Academic information",
+                  active: true,
+                },
+                {
+                  number: "02",
+                  title: "Your data",
+                  description: "Skills & experience",
+                  active: false,
+                },
+                {
+                  number: "03",
+                  title: "Your evidence",
+                  description: "Projects & credentials",
+                  active: false,
+                },
+                {
+                  number: "04",
+                  title: "Your direction",
+                  description: "Career & goals",
+                  active: false,
+                },
+              ].map((step) => (
+                <div
+                  key={step.number}
+                  className="flex items-start gap-3 border-t border-[var(--border-dark)] py-4">
+                  <span
+                    className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[9px] ${
+                      step.active
+                        ? "border-[var(--color-rose)] bg-[var(--color-rose)] text-[var(--color-black)]"
+                        : "border-[var(--border-dark)] text-[var(--text-muted)]"
+                    }`}>
+                    {step.number}
+                  </span>
+
+                  <div className="flex flex-col gap-1">
+                    <p
+                      className={`text-xs font-medium ${
+                        step.active
+                          ? "text-[var(--text-primary)]"
+                          : "text-[var(--text-secondary)]"
+                      }`}>
+                      {step.title}
+                    </p>
+
+                    <p className="text-[10px] text-[var(--text-muted)]">
+                      {step.description}
+                    </p>
+                  </div>
                 </div>
+              ))}
+            </div>
 
-                <div>
-                  <p className="text-sm font-semibold text-slate-800">
-                    Academic background
-                  </p>
-                  <p className="mt-1 text-xs text-slate-500">
-                    Your current course and academic year.
-                  </p>
-                </div>
+            {/* Intelligence note */}
+            <div className="flex flex-col gap-3 border-t border-[var(--border-dark)] pt-6">
+              <div className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-rose)]" />
+
+                <span className="text-[9px] uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                  Unified intelligence
+                </span>
               </div>
 
-              <div className="flex items-start gap-3">
-                <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">
-                  2
-                </div>
-
-                <div>
-                  <p className="text-sm font-semibold text-slate-800">
-                    Skills and projects
-                  </p>
-                  <p className="mt-1 text-xs text-slate-500">
-                    Your technical and soft skills.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">
-                  3
-                </div>
-
-                <div>
-                  <p className="text-sm font-semibold text-slate-800">
-                    Career preferences
-                  </p>
-                  <p className="mt-1 text-xs text-slate-500">
-                    Your interests and support needs.
-                  </p>
-                </div>
-              </div>
+              <p className="text-xs leading-5 text-[var(--text-muted)]">
+                Your information becomes evidence that contributes to your
+                personal skill graph.
+              </p>
             </div>
           </aside>
 
-          <main className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-            <div className="mb-8">
-              <p className="text-sm font-semibold uppercase tracking-wide text-blue-600">
-                PROFILE INFORMATION
-              </p>
+          {/* Form */}
+          <main className="flex flex-col gap-10 rounded-[var(--radius-lg)] border border-[var(--border-dark)] bg-[var(--surface-secondary)] p-6 sm:p-8 lg:p-10">
+            <div className="flex flex-col gap-3 border-b border-[var(--border-dark)] pb-8">
+              <span className="text-[9px] font-medium uppercase tracking-[0.22em] text-[var(--color-rose)]">
+                Profile information
+              </span>
 
-              <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900">
-                Tell us about yourself
+              <h2 className="text-3xl font-medium tracking-[-0.045em] sm:text-4xl">
+                Tell us about
+                <span className="text-[var(--color-rose)]"> yourself.</span>
               </h2>
 
-              <p className="mt-2 text-sm leading-relaxed text-slate-500">
-                This information will help us generate relevant skill insights
-                and career recommendations.
+              <p className="max-w-2xl text-sm leading-7 text-[var(--text-muted)]">
+                Start with the information you know. RAAHVI will combine it with
+                evidence from your projects, certificates, assessments and other
+                sources.
               </p>
 
               {Object.keys(errors).length > 0 && (
-                <p className="mt-4 text-sm text-red-600" role="alert">
-                  Please complete all required profile fields before saving.
-                </p>
+                <div className="flex items-center gap-3 border border-[var(--color-danger)]/30 bg-[var(--color-danger)]/10 p-4 text-xs text-[var(--color-danger)]">
+                  <MessageSquare size={15} />
+                  <span>
+                    Please complete the required fields before continuing.
+                  </span>
+                </div>
               )}
             </div>
 
-            <form className="space-y-8" onSubmit={handleSubmit(onSubmit)}>
-              <section>
-                <div className="mb-5 flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                    <GraduationCap className="h-5 w-5" />
+            <form
+              className="flex flex-col gap-10"
+              onSubmit={handleSubmit(onSubmit)}>
+              {/* =====================================================
+                  01 — ABOUT YOU
+              ====================================================== */}
+              <section className="flex flex-col gap-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--border-dark)]">
+                    <GraduationCap
+                      size={17}
+                      className="text-[var(--color-rose)]"
+                    />
                   </div>
 
-                  <div>
-                    <h3 className="font-semibold text-slate-900">
-                      Academic background
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[9px] uppercase tracking-[0.2em] text-[var(--color-rose)]">
+                      01 — About you
+                    </span>
+
+                    <h3 className="text-lg font-medium">
+                      Your academic foundation
                     </h3>
-                    <p className="text-xs text-slate-500">
-                      Tell us about your current studies.
+
+                    <p className="text-xs leading-5 text-[var(--text-muted)]">
+                      Basic information about your current academic journey.
                     </p>
                   </div>
                 </div>
 
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <div>
+                  {/* Name */}
+                  <div className="flex flex-col gap-2">
                     <label
                       htmlFor="name"
-                      className="mb-2 block text-sm font-medium text-slate-700">
+                      className="text-xs font-medium text-[var(--text-secondary)]">
                       Full name
                     </label>
 
                     <div className="relative">
-                      <UserRound className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                      <UserRound
+                        size={15}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
+                      />
 
                       <input
                         id="name"
-                        name="name"
                         type="text"
                         placeholder="Enter your full name"
                         {...register("name", {
                           required: "Full name is required",
                         })}
-                        className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                        className="h-12 w-full rounded-[var(--radius-sm)] border border-[var(--border-dark)] bg-[var(--surface-primary)] pl-11 pr-4 text-sm text-[var(--text-primary)] outline-none transition placeholder:text-[var(--text-muted)] focus:border-[var(--color-rose)]"
                       />
                     </div>
 
                     {errors.name && (
-                      <p className="mt-1 text-sm text-red-600">
+                      <p className="text-xs text-[var(--color-danger)]">
                         {errors.name.message}
                       </p>
                     )}
                   </div>
 
-                  <div>
+                  {/* Year */}
+                  <div className="flex flex-col gap-2">
                     <label
                       htmlFor="year"
-                      className="mb-2 block text-sm font-medium text-slate-700">
+                      className="text-xs font-medium text-[var(--text-secondary)]">
                       Academic year
                     </label>
 
                     <select
                       id="year"
-                      name="year"
                       defaultValue=""
                       {...register("year", {
                         required: "Academic year is required",
                       })}
-                      className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 text-sm text-slate-600 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10">
+                      className="h-12 w-full rounded-[var(--radius-sm)] border border-[var(--border-dark)] bg-[var(--surface-primary)] px-4 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--color-rose)]">
                       <option value="" disabled>
                         Select your year
                       </option>
@@ -193,36 +284,39 @@ function ProfileSetup() {
                     </select>
 
                     {errors.year && (
-                      <p className="mt-1 text-sm text-red-600">
+                      <p className="text-xs text-[var(--color-danger)]">
                         {errors.year.message}
                       </p>
                     )}
                   </div>
 
-                  <div className="sm:col-span-2">
+                  {/* Course */}
+                  <div className="flex flex-col gap-2 sm:col-span-2">
                     <label
                       htmlFor="current_course"
-                      className="mb-2 block text-sm font-medium text-slate-700">
+                      className="text-xs font-medium text-[var(--text-secondary)]">
                       Current course
                     </label>
 
                     <div className="relative">
-                      <GraduationCap className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                      <GraduationCap
+                        size={15}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
+                      />
 
                       <input
                         id="current_course"
-                        name="current_course"
                         type="text"
                         placeholder="e.g. B.Tech Computer Science and Engineering"
                         {...register("current_course", {
                           required: "Current course is required",
                         })}
-                        className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                        className="h-12 w-full rounded-[var(--radius-sm)] border border-[var(--border-dark)] bg-[var(--surface-primary)] pl-11 pr-4 text-sm text-[var(--text-primary)] outline-none transition placeholder:text-[var(--text-muted)] focus:border-[var(--color-rose)]"
                       />
                     </div>
 
                     {errors.current_course && (
-                      <p className="mt-1 text-sm text-red-600">
+                      <p className="text-xs text-[var(--color-danger)]">
                         {errors.current_course.message}
                       </p>
                     )}
@@ -230,435 +324,479 @@ function ProfileSetup() {
                 </div>
               </section>
 
-              <div className="h-px bg-slate-100" />
+              <div className="h-px bg-[var(--border-dark)]" />
 
-              <section>
-                <div className="mb-5 flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                    <Code2 className="h-5 w-5" />
+              {/* =====================================================
+                  02 — YOUR DATA
+              ====================================================== */}
+              <section className="flex flex-col gap-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--border-dark)]">
+                    <Database size={17} className="text-[var(--color-rose)]" />
                   </div>
 
-                  <div>
-                    <h3 className="font-semibold text-slate-900">
-                      Technical skills
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[9px] uppercase tracking-[0.2em] text-[var(--color-rose)]">
+                      02 — Your data
+                    </span>
+
+                    <h3 className="text-lg font-medium">
+                      Bring your experience together
                     </h3>
-                    <p className="text-xs text-slate-500">
-                      Describe your technical knowledge.
+
+                    <p className="text-xs leading-5 text-[var(--text-muted)]">
+                      RAAHVI can build your profile from multiple sources,
+                      rather than relying on a single form.
                     </p>
                   </div>
                 </div>
 
-                <div className="space-y-5">
-                  <div>
-                    <label
-                      htmlFor="technical_skills"
-                      className="mb-2 block text-sm font-medium text-slate-700">
-                      Technical skills
-                    </label>
+                {/* Source cards */}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {[
+                    {
+                      icon: GitBranchPlus,
+                      title: "GitHub",
+                      description: "Repositories, code and technologies.",
+                      action: "Connect",
+                      available: false,
+                    },
+                    {
+                      icon: FileText,
+                      title: "Resume",
+                      description: "Experience, skills and education.",
+                      action: "Upload",
+                      available: false,
+                    },
+                    {
+                      icon: FolderKanban,
+                      title: "Projects",
+                      description: "Work you've built and skills applied.",
+                      action: "Add project",
+                      available: true,
+                    },
+                    {
+                      icon: Award,
+                      title: "Certificates",
+                      description: "Courses, credentials and achievements.",
+                      action: "Add certificate",
+                      available: true,
+                    },
+                    {
+                      icon: ClipboardCheck,
+                      title: "Assessments",
+                      description: "Scores and demonstrated proficiency.",
+                      action: "Add assessment",
+                      available: true,
+                    },
+                    {
+                      icon: BriefcaseIcon,
+                      title: "Experience",
+                      description: "Internships, jobs and practical work.",
+                      action: "Add experience",
+                      available: false,
+                    },
+                  ].map((source) => {
+                    const Icon = source.icon;
 
-                    <textarea
-                      id="technical_skills"
-                      name="technical_skills"
-                      rows="3"
-                      placeholder="e.g. Web development, database management, data structures, machine learning"
-                      {...register("technical_skills", {
-                        required: "Technical skills are required",
-                      })}
-                      className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
-                    />
+                    return (
+                      <div
+                        key={source.title}
+                        className="flex flex-col gap-5 rounded-[var(--radius-md)] border border-[var(--border-dark)] bg-[var(--surface-primary)] p-5 transition hover:border-[var(--color-rose)]/40">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border-dark)]">
+                            <Icon
+                              size={16}
+                              className="text-[var(--color-rose)]"
+                            />
+                          </div>
 
-                    {errors.technical_skills && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.technical_skills.message}
-                      </p>
-                    )}
+                          {!source.available && (
+                            <span className="rounded-full border border-[var(--border-dark)] px-2.5 py-1 text-[8px] uppercase tracking-[0.14em] text-[var(--text-muted)]">
+                              Coming soon
+                            </span>
+                          )}
+                        </div>
 
-                    <p className="mt-2 text-xs text-slate-400">
-                      Separate multiple skills with commas.
-                    </p>
-                  </div>
+                        <div className="flex flex-col gap-2">
+                          <h4 className="text-sm font-medium">
+                            {source.title}
+                          </h4>
 
-                  <div>
-                    <label
-                      htmlFor="programming_languages"
-                      className="mb-2 block text-sm font-medium text-slate-700">
-                      Programming languages
-                    </label>
+                          <p className="text-xs leading-5 text-[var(--text-muted)]">
+                            {source.description}
+                          </p>
+                        </div>
 
-                    <input
-                      id="programming_languages"
-                      name="programming_languages"
-                      type="text"
-                      placeholder="e.g. JavaScript, Python, Java, C++"
-                      {...register("programming_languages", {
-                        required: "Programming languages are required",
-                      })}
-                      className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
-                    />
-
-                    {errors.programming_languages && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.programming_languages.message}
-                      </p>
-                    )}
-
-                    <p className="mt-2 text-xs text-slate-400">
-                      Separate multiple languages with commas.
-                    </p>
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="technical_rating"
-                      className="mb-2 block text-sm font-medium text-slate-700">
-                      Rate your technical skills
-                    </label>
-
-                    <select
-                      id="technical_rating"
-                      name="technical_rating"
-                      defaultValue=""
-                      {...register("technical_rating", {
-                        required: "Technical rating is required",
-                      })}
-                      className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 text-sm text-slate-600 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10">
-                      <option value="" disabled>
-                        Select your rating
-                      </option>
-                      <option value="1">1 - Beginner</option>
-                      <option value="2">2 - Basic</option>
-                      <option value="3">3 - Intermediate</option>
-                      <option value="4">4 - Advanced</option>
-                      <option value="5">5 - Expert</option>
-                    </select>
-
-                    {errors.technical_rating && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.technical_rating.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </section>
-
-              <div className="h-px bg-slate-100" />
-
-              <section>
-                <div className="mb-5 flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                    <Brain className="h-5 w-5" />
-                  </div>
-
-                  <div>
-                    <h3 className="font-semibold text-slate-900">
-                      Soft skills
-                    </h3>
-                    <p className="text-xs text-slate-500">
-                      Tell us about your interpersonal strengths.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="space-y-5">
-                  <div>
-                    <label
-                      htmlFor="soft_skills"
-                      className="mb-2 block text-sm font-medium text-slate-700">
-                      Soft skills
-                    </label>
-
-                    <textarea
-                      id="soft_skills"
-                      name="soft_skills"
-                      rows="3"
-                      placeholder="e.g. Communication, teamwork, leadership, problem-solving"
-                      {...register("soft_skills", {
-                        required: "Soft skills are required",
-                      })}
-                      className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
-                    />
-
-                    {errors.soft_skills && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.soft_skills.message}
-                      </p>
-                    )}
-
-                    <p className="mt-2 text-xs text-slate-400">
-                      Separate multiple skills with commas.
-                    </p>
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="soft_skill_rating"
-                      className="mb-2 block text-sm font-medium text-slate-700">
-                      Rate your soft skills
-                    </label>
-
-                    <select
-                      id="soft_skill_rating"
-                      name="soft_skill_rating"
-                      defaultValue=""
-                      {...register("soft_skill_rating", {
-                        required: "Soft skill rating is required",
-                      })}
-                      className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 text-sm text-slate-600 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10">
-                      <option value="" disabled>
-                        Select your rating
-                      </option>
-                      <option value="1">1 - Beginner</option>
-                      <option value="2">2 - Basic</option>
-                      <option value="3">3 - Intermediate</option>
-                      <option value="4">4 - Advanced</option>
-                      <option value="5">5 - Expert</option>
-                    </select>
-
-                    {errors.soft_skill_rating && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.soft_skill_rating.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </section>
-
-              <div className="h-px bg-slate-100" />
-
-              <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="mb-5">
-                  <h2 className="text-lg font-semibold text-slate-900">
-                    Projects
-                  </h2>
-                  <p className="mt-1 text-sm text-slate-500">
-                    Tell us whether you have completed any technical or academic
-                    projects.
-                  </p>
-                </div>
-
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">
-                    Have you worked on any projects?
-                  </label>
-
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 p-4 transition hover:border-indigo-400 hover:bg-indigo-50">
-                      <input
-                        type="radio"
-                        name="projects"
-                        value="true"
-                        {...register("projects", {
-                          required: "Please select whether you have projects",
-                        })}
-                        className="h-4 w-4 accent-indigo-600"
-                      />
-                      <div>
-                        <p className="font-medium text-slate-900">Yes</p>
-                        <p className="text-sm text-slate-500">
-                          I have completed one or more projects
-                        </p>
+                        <button
+                          type="button"
+                          disabled={!source.available}
+                          className="flex items-center justify-between border-t border-[var(--border-dark)] pt-4 text-[9px] font-medium uppercase tracking-[0.16em] text-[var(--text-secondary)] disabled:cursor-not-allowed disabled:opacity-40">
+                          <span>{source.action}</span>
+                          {source.available ? (
+                            <Plus size={13} />
+                          ) : (
+                            <ArrowRight size={13} />
+                          )}
+                        </button>
                       </div>
-                    </label>
+                    );
+                  })}
+                </div>
 
-                    <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 p-4 transition hover:border-indigo-400 hover:bg-indigo-50">
-                      <input
-                        type="radio"
-                        name="projects"
-                        value="false"
-                        {...register("projects", {
-                          required: "Please select whether you have projects",
-                        })}
-                        className="h-4 w-4 accent-indigo-600"
-                      />
-                      <div>
-                        <p className="font-medium text-slate-900">No</p>
-                        <p className="text-sm text-slate-500">
-                          I have not completed any projects yet
-                        </p>
-                      </div>
-                    </label>
+                {/* Self reported skills */}
+                <div className="flex flex-col gap-6 border-t border-[var(--border-dark)] pt-6">
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[9px] uppercase tracking-[0.2em] text-[var(--text-muted)]">
+                      Self-reported information
+                    </span>
+
+                    <p className="text-xs leading-5 text-[var(--text-muted)]">
+                      You can still tell us what you already know. These become
+                      one source of evidence in your unified profile.
+                    </p>
                   </div>
 
-                  {errors.projects && (
-                    <p className="mt-2 text-sm text-red-600" role="alert">
-                      {errors.projects.message}
-                    </p>
-                  )}
+                  <div className="grid gap-5">
+                    {/* Technical skills */}
+                    <div className="flex flex-col gap-2">
+                      <label
+                        htmlFor="technical_skills"
+                        className="text-xs font-medium text-[var(--text-secondary)]">
+                        Technical skills
+                      </label>
+
+                      <textarea
+                        id="technical_skills"
+                        rows="3"
+                        placeholder="e.g. React, Node.js, MongoDB, REST APIs"
+                        {...register("technical_skills", {
+                          required: "Technical skills are required",
+                        })}
+                        className="w-full resize-none rounded-[var(--radius-sm)] border border-[var(--border-dark)] bg-[var(--surface-primary)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--color-rose)]"
+                      />
+
+                      <span className="text-[10px] text-[var(--text-muted)]">
+                        Separate multiple skills with commas.
+                      </span>
+
+                      {errors.technical_skills && (
+                        <p className="text-xs text-[var(--color-danger)]">
+                          {errors.technical_skills.message}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Languages */}
+                    <div className="flex flex-col gap-2">
+                      <label
+                        htmlFor="programming_languages"
+                        className="text-xs font-medium text-[var(--text-secondary)]">
+                        Programming languages
+                      </label>
+
+                      <input
+                        id="programming_languages"
+                        type="text"
+                        placeholder="e.g. JavaScript, Python, C++, Java"
+                        {...register("programming_languages", {
+                          required: "Programming languages are required",
+                        })}
+                        className="h-12 w-full rounded-[var(--radius-sm)] border border-[var(--border-dark)] bg-[var(--surface-primary)] px-4 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--color-rose)]"
+                      />
+
+                      <span className="text-[10px] text-[var(--text-muted)]">
+                        Separate multiple languages with commas.
+                      </span>
+
+                      {errors.programming_languages && (
+                        <p className="text-xs text-[var(--color-danger)]">
+                          {errors.programming_languages.message}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Soft skills */}
+                    <div className="flex flex-col gap-2">
+                      <label
+                        htmlFor="soft_skills"
+                        className="text-xs font-medium text-[var(--text-secondary)]">
+                        Soft skills
+                      </label>
+
+                      <textarea
+                        id="soft_skills"
+                        rows="3"
+                        placeholder="e.g. Communication, teamwork, leadership"
+                        {...register("soft_skills", {
+                          required: "Soft skills are required",
+                        })}
+                        className="w-full resize-none rounded-[var(--radius-sm)] border border-[var(--border-dark)] bg-[var(--surface-primary)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--color-rose)]"
+                      />
+
+                      <span className="text-[10px] text-[var(--text-muted)]">
+                        Separate multiple skills with commas.
+                      </span>
+
+                      {errors.soft_skills && (
+                        <p className="text-xs text-[var(--color-danger)]">
+                          {errors.soft_skills.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </section>
 
-              <div className="h-px bg-slate-100" />
+              <div className="h-px bg-[var(--border-dark)]" />
 
-              <section>
-                <div className="mb-5 flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                    <Target className="h-5 w-5" />
+              {/* =====================================================
+                  03 — YOUR EVIDENCE
+              ====================================================== */}
+              <section className="flex flex-col gap-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--border-dark)]">
+                    <ClipboardCheck
+                      size={17}
+                      className="text-[var(--color-rose)]"
+                    />
                   </div>
 
-                  <div>
-                    <h3 className="font-semibold text-slate-900">
-                      Career interests
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[9px] uppercase tracking-[0.2em] text-[var(--color-rose)]">
+                      03 — Your evidence
+                    </span>
+
+                    <h3 className="text-lg font-medium">
+                      Build evidence around your skills
                     </h3>
-                    <p className="text-xs text-slate-500">
-                      Help us understand your direction.
+
+                    <p className="text-xs leading-5 text-[var(--text-muted)]">
+                      Your proficiency becomes stronger when a skill is
+                      supported by projects, assessments, certificates or
+                      experience.
                     </p>
                   </div>
                 </div>
 
-                <div>
-                  <label
-                    htmlFor="career_interest"
-                    className="mb-2 block text-sm font-medium text-slate-700">
-                    Career interest
-                  </label>
+                <div className="grid gap-4 sm:grid-cols-3">
+                  {[
+                    {
+                      icon: FolderKanban,
+                      title: "Projects",
+                      text: "Demonstrate how you've applied a skill.",
+                    },
+                    {
+                      icon: Award,
+                      title: "Certificates",
+                      text: "Add credentials that support your knowledge.",
+                    },
+                    {
+                      icon: ClipboardCheck,
+                      title: "Assessments",
+                      text: "Use scores to strengthen skill evidence.",
+                    },
+                  ].map((item) => {
+                    const Icon = item.icon;
 
-                  <textarea
-                    id="career_interest"
-                    name="career_interest"
-                    rows="3"
-                    placeholder="e.g. I am interested in becoming a full-stack developer or data analyst."
-                    {...register("career_interest", {
-                      required: "Career interest is required",
-                    })}
-                    className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                    return (
+                      <div
+                        key={item.title}
+                        className="flex flex-col gap-4 rounded-[var(--radius-md)] border border-[var(--border-dark)] bg-[var(--surface-primary)] p-5">
+                        <Icon size={17} className="text-[var(--color-rose)]" />
+
+                        <div className="flex flex-col gap-2">
+                          <h4 className="text-sm font-medium">{item.title}</h4>
+
+                          <p className="text-xs leading-5 text-[var(--text-muted)]">
+                            {item.text}
+                          </p>
+                        </div>
+
+                        <div className="flex items-center gap-2 border-t border-[var(--border-dark)] pt-3">
+                          <CheckCircle2
+                            size={12}
+                            className="text-[var(--text-muted)]"
+                          />
+
+                          <span className="text-[9px] uppercase tracking-[0.14em] text-[var(--text-muted)]">
+                            Evidence source
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="flex items-center gap-3 border border-[var(--border-dark)] bg-[var(--surface-primary)] p-4">
+                  <Database
+                    size={15}
+                    className="shrink-0 text-[var(--color-rose)]"
                   />
 
-                  {errors.career_interest && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.career_interest.message}
-                    </p>
-                  )}
+                  <p className="text-xs leading-5 text-[var(--text-muted)]">
+                    RAAHVI combines these evidence sources to create a unified
+                    skill profile instead of relying only on self-reported
+                    ratings.
+                  </p>
                 </div>
               </section>
 
-              <div className="h-px bg-slate-100" />
+              <div className="h-px bg-[var(--border-dark)]" />
 
-              <section>
-                <div className="mb-5 flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                    <MessageSquare className="h-5 w-5" />
+              {/* =====================================================
+                  04 — YOUR DIRECTION
+              ====================================================== */}
+              <section className="flex flex-col gap-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--border-dark)]">
+                    <Target size={17} className="text-[var(--color-rose)]" />
                   </div>
 
-                  <div>
-                    <h3 className="font-semibold text-slate-900">
-                      Challenges and support
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[9px] uppercase tracking-[0.2em] text-[var(--color-rose)]">
+                      04 — Your direction
+                    </span>
+
+                    <h3 className="text-lg font-medium">
+                      Where do you want to go?
                     </h3>
-                    <p className="text-xs text-slate-500">
-                      Tell us where you need guidance.
+
+                    <p className="text-xs leading-5 text-[var(--text-muted)]">
+                      Your goals help RAAHVI understand what skills and
+                      opportunities matter to you.
                     </p>
                   </div>
                 </div>
 
-                <div className="space-y-5">
-                  <div>
+                <div className="flex flex-col gap-5">
+                  {/* Career */}
+                  <div className="flex flex-col gap-2">
                     <label
-                      htmlFor="challenges"
-                      className="mb-2 block text-sm font-medium text-slate-700">
-                      Current challenges
+                      htmlFor="career_interest"
+                      className="text-xs font-medium text-[var(--text-secondary)]">
+                      Target career
                     </label>
 
                     <textarea
-                      id="challenges"
-                      name="challenges"
+                      id="career_interest"
                       rows="3"
-                      placeholder="e.g. I find it difficult to choose a career path or identify the skills I need to improve."
-                      {...register("challenges", {
-                        required: "Current challenges are required",
+                      placeholder="e.g. Full Stack Developer, Data Analyst, AI Engineer"
+                      {...register("career_interest", {
+                        required: "Career interest is required",
                       })}
-                      className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                      className="w-full resize-none rounded-[var(--radius-sm)] border border-[var(--border-dark)] bg-[var(--surface-primary)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--color-rose)]"
                     />
 
-                    {errors.challenges && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.challenges.message}
+                    {errors.career_interest && (
+                      <p className="text-xs text-[var(--color-danger)]">
+                        {errors.career_interest.message}
                       </p>
                     )}
                   </div>
 
-                  <div>
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    {/* Challenges */}
+                    <div className="flex flex-col gap-2">
+                      <label
+                        htmlFor="challenges"
+                        className="text-xs font-medium text-[var(--text-secondary)]">
+                        Current challenges
+                      </label>
+
+                      <textarea
+                        id="challenges"
+                        rows="4"
+                        placeholder="What are you struggling with right now?"
+                        {...register("challenges", {
+                          required: "Current challenges are required",
+                        })}
+                        className="w-full resize-none rounded-[var(--radius-sm)] border border-[var(--border-dark)] bg-[var(--surface-primary)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--color-rose)]"
+                      />
+
+                      {errors.challenges && (
+                        <p className="text-xs text-[var(--color-danger)]">
+                          {errors.challenges.message}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Support */}
+                    <div className="flex flex-col gap-2">
+                      <label
+                        htmlFor="support_required"
+                        className="text-xs font-medium text-[var(--text-secondary)]">
+                        Support required
+                      </label>
+
+                      <textarea
+                        id="support_required"
+                        rows="4"
+                        placeholder="What kind of guidance would help you?"
+                        {...register("support_required", {
+                          required: "Support requirements are required",
+                        })}
+                        className="w-full resize-none rounded-[var(--radius-sm)] border border-[var(--border-dark)] bg-[var(--surface-primary)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--color-rose)]"
+                      />
+
+                      {errors.support_required && (
+                        <p className="text-xs text-[var(--color-danger)]">
+                          {errors.support_required.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Learning method */}
+                  <div className="flex flex-col gap-2">
                     <label
-                      htmlFor="support_required"
-                      className="mb-2 block text-sm font-medium text-slate-700">
-                      Support required
+                      htmlFor="method"
+                      className="text-xs font-medium text-[var(--text-secondary)]">
+                      Preferred learning method
                     </label>
 
-                    <textarea
-                      id="support_required"
-                      name="support_required"
-                      rows="3"
-                      placeholder="e.g. Career guidance, learning resources, skill improvement suggestions, or job recommendations."
-                      {...register("support_required", {
-                        required: "Support requirements are required",
+                    <select
+                      id="method"
+                      defaultValue=""
+                      {...register("method", {
+                        required: "Assessment method is required",
                       })}
-                      className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
-                    />
+                      className="h-12 w-full rounded-[var(--radius-sm)] border border-[var(--border-dark)] bg-[var(--surface-primary)] px-4 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--color-rose)]">
+                      <option value="" disabled>
+                        Select a learning method
+                      </option>
+                      <option value="videos">Videos</option>
+                      <option value="documentation">Documentation</option>
+                      <option value="hands_on_projects">
+                        Hands-on Projects
+                      </option>
+                      <option value="courses">Courses</option>
+                    </select>
 
-                    {errors.support_required && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.support_required.message}
+                    {errors.method && (
+                      <p className="text-xs text-[var(--color-danger)]">
+                        {errors.method.message}
                       </p>
                     )}
                   </div>
                 </div>
               </section>
 
-              <div className="h-px bg-slate-100" />
+              {/* Submit */}
+              <div className="flex items-center justify-between border-t border-[var(--border-dark)] pt-6">
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-rose)]" />
 
-              <section>
-                <div className="mb-5 flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                    <ClipboardList className="h-5 w-5" />
-                  </div>
-
-                  <div>
-                    <h3 className="font-semibold text-slate-900">
-                      Learning method
-                    </h3>
-                    <p className="text-xs text-slate-500">
-                      Select how you want to provide your information.
-                    </p>
-                  </div>
+                  <span className="text-[9px] uppercase tracking-[0.16em] text-[var(--text-muted)]">
+                    RAAHVI · Unified skill intelligence
+                  </span>
                 </div>
 
-                <div>
-                  <label
-                    htmlFor="method"
-                    className="mb-2 block text-sm font-medium text-slate-700">
-                    Method
-                  </label>
-
-                  <select
-                    id="method"
-                    name="method"
-                    defaultValue=""
-                    {...register("method", {
-                      required: "Assessment method is required",
-                    })}
-                    className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 text-sm text-slate-600 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10">
-                    <option value="" disabled>
-                      Select a method
-                    </option>
-                    <option value="videos">Videos</option>
-                    <option value="documentation">Documentation</option>
-                    <option value="hands_on_projects">Hands on Projects</option>
-                    <option value="courses">Courses</option>
-                  </select>
-
-                  {errors.method && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.method.message}
-                    </p>
-                  )}
-                </div>
-              </section>
-
-              <div className="flex justify-end border-t border-slate-100 pt-6">
                 <button
-                  // onClick={() => navigate("/")}
                   type="submit"
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 text-sm font-semibold text-white shadow-sm shadow-blue-600/20 transition hover:bg-blue-700 active:scale-[0.98]">
-                  Save profile
-                  <ArrowRight className="h-4 w-4" />
+                  className="flex h-11 items-center gap-3 rounded-full bg-[var(--color-rose)] px-6 text-xs font-medium uppercase tracking-[0.12em] text-[var(--color-black)] transition hover:bg-[var(--color-white)] active:scale-[0.98]">
+                  Build my profile
+                  <ArrowRight size={14} />
                 </button>
               </div>
             </form>
@@ -667,6 +805,11 @@ function ProfileSetup() {
       </div>
     </div>
   );
+}
+
+/* Small local icon wrapper so the source-card array stays clean. */
+function BriefcaseIcon(props) {
+  return <FolderKanban {...props} />;
 }
 
 export default ProfileSetup;

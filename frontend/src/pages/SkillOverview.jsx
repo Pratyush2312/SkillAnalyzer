@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import {
   ArrowLeft,
@@ -22,14 +22,13 @@ import {
   X,
 } from "lucide-react";
 
-import { CareerContext } from "../context/MyCareer";
+import { api } from "../config/api";
 
 /* -------------------------------------------------------
    Helpers
 ------------------------------------------------------- */
 
-const getProficiency = (skill) =>
-  Math.round(Number(skill?.proficiency ?? skill?.score ?? skill?.rating ?? 0));
+const getProficiency = (skill) => Math.round(Number(skill?.proficiency ?? 0));
 
 const getStatus = (value) => {
   if (value >= 70) return "Strong";
@@ -78,6 +77,41 @@ const getEvidenceIcon = (type = "") => {
 
   return Layers3;
 };
+
+const formatSource = (source = "") => {
+  if (!source) return "Unknown";
+
+  return source
+    .replace(/[-_]/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+};
+
+const normalizeSkill = (item) => {
+  const skill = item?.skill || {};
+
+  return {
+    _id: skill?._id || item?._id,
+    name: skill?.name || "Unknown skill",
+    category: skill?.category || null,
+    subcategory: skill?.subcategory || null,
+    aliases: skill?.aliases || [],
+    relatedSkills: skill?.relatedSkills || [],
+    prerequisites: skill?.prerequisites || [],
+
+    proficiency: Number(item?.proficiency ?? 0),
+    evidenceCount: Number(item?.evidenceCount ?? 0),
+    evidence: Array.isArray(item?.evidence) ? item.evidence : [],
+
+    status: item?.status,
+    evidenceSources: Array.isArray(item?.evidenceSources)
+      ? item.evidenceSources
+      : [],
+    sourceCount: Number(item?.sourceCount ?? 0),
+    confidence: Number(item?.confidence ?? 0),
+  };
+};
+
+
 
 /* -------------------------------------------------------
    Stat
@@ -136,9 +170,22 @@ const SkillBar = ({ skill, onClick, active }) => {
               {skill.name}
             </p>
 
-            <p className="mt-1 text-xs text-[var(--text-muted)]">
-              {skill.category || "General capability"}
-            </p>
+            <div className="mt-1 flex items-center gap-2">
+              <p className="text-xs text-[var(--text-muted)]">
+                {skill.category || "General capability"}
+              </p>
+
+              {skill.sourceCount > 0 && (
+                <>
+                  <span className="text-[var(--text-muted)]">·</span>
+
+                  <span className="text-[10px] uppercase tracking-[0.08em] text-[var(--text-muted)]">
+                    {skill.sourceCount}{" "}
+                    {skill.sourceCount === 1 ? "source" : "sources"}
+                  </span>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
@@ -187,10 +234,18 @@ const EvidenceItem = ({ evidence }) => {
         <Icon size={14} className="text-[var(--color-rose)]" />
       </div>
 
-      <div className="min-w-0">
-        <p className="text-sm text-[var(--text-primary)]">
-          {evidence?.type || evidence?.source || "Profile evidence"}
-        </p>
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center justify-between gap-4">
+          <p className="text-sm capitalize text-[var(--text-primary)]">
+            {formatSource(evidence?.type || evidence?.source)}
+          </p>
+
+          {evidence?.proficiency != null && (
+            <span className="text-xs text-[var(--color-rose)]">
+              {evidence.proficiency}
+            </span>
+          )}
+        </div>
 
         {(evidence?.description || evidence?.source) && (
           <p className="mt-1 text-xs leading-5 text-[var(--text-muted)]">
@@ -203,7 +258,7 @@ const EvidenceItem = ({ evidence }) => {
 };
 
 /* -------------------------------------------------------
-   Radar Visual
+   Radar
 ------------------------------------------------------- */
 
 const SkillRadar = ({ skills }) => {
@@ -229,6 +284,7 @@ const SkillRadar = ({ skills }) => {
   const polygon = points
     .map((skill, index) => {
       const point = getPoint(index, getProficiency(skill));
+
       return `${point.x},${point.y}`;
     })
     .join(" ");
@@ -244,6 +300,7 @@ const SkillRadar = ({ skills }) => {
             points={points
               .map((_, index) => {
                 const point = getPoint(index, level);
+
                 return `${point.x},${point.y}`;
               })
               .join(" ")}
@@ -327,20 +384,59 @@ const SkillRadar = ({ skills }) => {
 const SkillOverview = () => {
   const navigate = useNavigate();
 
-  const { student, skillIntelligence, skillLoading } =
-    useContext(CareerContext);
+  const [intelligence, setIntelligence] = useState(null);
+
+  const [skillLoading, setSkillLoading] = useState(true);
+
+  const [skillError, setSkillError] = useState(null);
 
   const [selectedSkill, setSelectedSkill] = useState(null);
 
-  const summary = skillIntelligence?.summary || {};
+  /* -----------------------------------------------------
+     Fetch Skill Intelligence
+  ----------------------------------------------------- */
 
-  const skills = useMemo(() => {
-    return Array.isArray(skillIntelligence?.skills)
-      ? [...skillIntelligence.skills].sort(
-          (a, b) => getProficiency(b) - getProficiency(a),
-        )
-      : [];
-  }, [skillIntelligence]);
+  useEffect(() => {
+    const fetchSkillIntelligence = async () => {
+      try {
+        setSkillLoading(true);
+        setSkillError(null);
+
+        const response = await api.get("/api/skill-intelligence/me");
+
+        setIntelligence(response?.data?.data || null);
+      } catch (error) {
+        console.error("Failed to fetch skill intelligence:", error);
+
+        setSkillError(
+          error?.response?.data?.message ||
+            "Unable to load your skill intelligence.",
+        );
+
+        setIntelligence(null);
+      } finally {
+        setSkillLoading(false);
+      }
+    };
+
+    fetchSkillIntelligence();
+  }, []);
+
+  /* -----------------------------------------------------
+     Intelligence Data
+  ----------------------------------------------------- */
+
+  const summary = intelligence?.summary || {};
+
+ const skills = useMemo(() => {
+   if (!Array.isArray(intelligence?.skills)) {
+     return [];
+   }
+
+   return intelligence.skills
+     .map(normalizeSkill)
+     .sort((a, b) => getProficiency(b) - getProficiency(a));
+ }, [intelligence]);
 
   const totalSkills = summary.totalSkills ?? skills.length;
 
@@ -352,6 +448,7 @@ const SkillOverview = () => {
     summary.developingSkills ??
     skills.filter((skill) => {
       const value = getProficiency(skill);
+
       return value >= 40 && value < 70;
     }).length;
 
@@ -359,21 +456,31 @@ const SkillOverview = () => {
     summary.weakSkills ??
     skills.filter((skill) => getProficiency(skill) < 40).length;
 
-  const averageProficiency = skills.length
-    ? Math.round(
-        skills.reduce((sum, skill) => sum + getProficiency(skill), 0) /
-          skills.length,
-      )
-    : 0;
+  const averageProficiency =
+    summary.averageProficiency ??
+    (skills.length
+      ? Math.round(
+          skills.reduce((sum, skill) => sum + getProficiency(skill), 0) /
+            skills.length,
+        )
+      : 0);
 
-  const strongestSkill = skills[0];
-  const prioritySkills = [...skills]
-    .sort((a, b) => getProficiency(a) - getProficiency(b))
-    .slice(0, 3);
+  const averageConfidence = summary.averageConfidence ?? 0;
+
+  const evidenceSourceCount =
+    summary.evidenceSourceCount ?? summary.evidenceSources?.length ?? 0;
+
+  const totalEvidence =
+    summary.totalEvidence ??
+    skills.reduce((sum, skill) => sum + (skill.evidenceCount || 0), 0);
 
   const categoryCount = new Set(
     skills.map((skill) => skill.category).filter(Boolean),
   ).size;
+
+  const prioritySkills = [...skills]
+    .sort((a, b) => getProficiency(a) - getProficiency(b))
+    .slice(0, 3);
 
   return (
     <main className="min-h-screen bg-[var(--surface-primary)] text-[var(--text-primary)]">
@@ -400,8 +507,8 @@ const SkillOverview = () => {
               </h1>
 
               <p className="mt-5 max-w-2xl text-base leading-7 text-[var(--text-secondary)]">
-                Your skills are represented as a living capability profile built
-                from the evidence available across your learning and experience.
+                Your capability profile is built from the evidence available
+                across your learning and experience.
               </p>
             </div>
 
@@ -422,7 +529,7 @@ const SkillOverview = () => {
         </section>
 
         {/* Stats */}
-        <section className="grid gap-8 border-b border-[var(--border-dark)] py-10 sm:grid-cols-2 lg:grid-cols-5">
+        <section className="grid gap-8 border-b border-[var(--border-dark)] py-10 sm:grid-cols-2 lg:grid-cols-6">
           <IntelligenceStat
             label="Skills"
             value={skillLoading ? "—" : totalSkills}
@@ -449,11 +556,41 @@ const SkillOverview = () => {
           />
 
           <IntelligenceStat
-            label="Categories"
-            value={skillLoading ? "—" : categoryCount}
-            description="Skill areas represented"
+            label="Confidence"
+            value={skillLoading ? "—" : `${averageConfidence}%`}
+            description="Evidence confidence"
+          />
+
+          <IntelligenceStat
+            label="Evidence"
+            value={skillLoading ? "—" : totalEvidence}
+            description={`${evidenceSourceCount} source${
+              evidenceSourceCount === 1 ? "" : "s"
+            } connected`}
           />
         </section>
+
+        {/* Error */}
+        {skillError && !skillLoading && (
+          <section className="border-b border-[var(--border-dark)] py-8">
+            <div className="flex items-start gap-4 border border-[rgba(184,120,120,0.25)] bg-[rgba(184,120,120,0.06)] p-5">
+              <CircleAlert
+                size={18}
+                className="shrink-0 text-[var(--color-danger)]"
+              />
+
+              <div>
+                <p className="text-sm text-[var(--text-primary)]">
+                  Skill intelligence could not be loaded.
+                </p>
+
+                <p className="mt-1 text-xs text-[var(--text-muted)]">
+                  {skillError}
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
 
         {skillLoading ? (
           <section className="grid gap-8 py-12 lg:grid-cols-[1.3fr_0.7fr]">
@@ -463,6 +600,7 @@ const SkillOverview = () => {
                   key={item}
                   className="animate-pulse border-b border-[var(--border-dark)] py-5">
                   <div className="h-4 w-40 bg-[var(--color-charcoal)]" />
+
                   <div className="mt-4 h-[3px] bg-[var(--color-charcoal)]" />
                 </div>
               ))}
@@ -471,7 +609,6 @@ const SkillOverview = () => {
             <div className="h-[400px] animate-pulse bg-[var(--color-charcoal)]" />
           </section>
         ) : skills.length === 0 ? (
-          /* Empty State */
           <section className="py-20">
             <div className="mx-auto max-w-xl border border-dashed border-[var(--border-dark)] p-10 text-center">
               <Brain size={32} className="mx-auto text-[var(--color-rose)]" />
@@ -517,8 +654,8 @@ const SkillOverview = () => {
                     </h2>
 
                     <p className="mt-2 max-w-xl text-sm leading-6 text-[var(--text-muted)]">
-                      Select a skill to inspect the evidence behind its current
-                      proficiency signal.
+                      Select a skill to inspect its proficiency, confidence and
+                      the evidence behind it.
                     </p>
                   </div>
 
@@ -563,7 +700,7 @@ const SkillOverview = () => {
               </div>
             </section>
 
-            {/* Selected Skill Detail */}
+            {/* Selected Skill */}
             {selectedSkill && (
               <section className="border-y border-[var(--border-dark)] py-10">
                 <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr]">
@@ -596,18 +733,40 @@ const SkillOverview = () => {
                       </span>
                     </div>
 
-                    <div className="mt-5">
+                    <div className="mt-5 flex flex-wrap items-center gap-3">
                       <span
                         className={`inline-flex px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] ${getStatusClass(
                           getProficiency(selectedSkill),
                         )}`}>
                         {getStatus(getProficiency(selectedSkill))}
                       </span>
+
+                      <span className="border border-[var(--border-dark)] px-3 py-1.5 text-[10px] uppercase tracking-[0.14em] text-[var(--text-secondary)]">
+                        {selectedSkill.confidence ?? 0}% confidence
+                      </span>
                     </div>
 
                     <p className="mt-5 max-w-md text-sm leading-6 text-[var(--text-muted)]">
                       {getStatusDescription(getProficiency(selectedSkill))}
                     </p>
+
+                    {selectedSkill.evidenceSources?.length > 0 && (
+                      <div className="mt-7">
+                        <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--text-muted)]">
+                          Evidence sources
+                        </p>
+
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {selectedSkill.evidenceSources.map((source) => (
+                            <span
+                              key={source}
+                              className="border border-[var(--border-dark)] px-3 py-1.5 text-xs text-[var(--text-secondary)]">
+                              {formatSource(source)}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   <div className="border-l border-[var(--border-dark)] pl-0 lg:pl-10">
@@ -635,13 +794,8 @@ const SkillOverview = () => {
                     ) : (
                       <div className="mt-5 border border-dashed border-[var(--border-dark)] p-6">
                         <p className="text-sm text-[var(--text-secondary)]">
-                          {selectedSkill.evidenceCount || 0} evidence sources
-                          currently contribute to this signal.
-                        </p>
-
-                        <p className="mt-2 text-xs leading-5 text-[var(--text-muted)]">
-                          Add projects, assessments, certificates or experience
-                          to strengthen the evidence behind this capability.
+                          No evidence sources currently contribute to this
+                          signal.
                         </p>
                       </div>
                     )}
@@ -727,8 +881,8 @@ const SkillOverview = () => {
                   </h2>
 
                   <p className="mt-4 max-w-md text-sm leading-6 text-[var(--text-muted)]">
-                    RAAHVI can combine different forms of evidence to create a
-                    more useful picture of capability.
+                    RAAHVI combines multiple forms of evidence to create a more
+                    useful picture of capability.
                   </p>
                 </div>
 

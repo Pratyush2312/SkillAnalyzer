@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 import {
   AlertTriangle,
@@ -206,6 +206,7 @@ const GapSkillRow = ({ skill, selected, onSelect }) => {
 
 const SkillGap = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { student } = useContext(CareerContext);
 
@@ -213,11 +214,23 @@ const SkillGap = () => {
      TARGET ROLE
   ------------------------------------------------------- */
 
-  const initialRole = student?.career_interest || "Full Stack Developer";
+  const getRoleFromUrl = () => {
+    const params = new URLSearchParams(location.search);
 
-  const [role, setRole] = useState(initialRole);
+    return params.get("role")?.trim() || "";
+  };
 
-  const [inputRole, setInputRole] = useState(initialRole);
+  const getInitialRole = () => {
+    return (
+      getRoleFromUrl() ||
+      student?.career_interest?.trim() ||
+      "Backend Developer"
+    );
+  };
+
+  const [role, setRole] = useState(getInitialRole);
+
+  const [inputRole, setInputRole] = useState(getInitialRole);
 
   /* -------------------------------------------------------
      SKILL GAP
@@ -253,11 +266,14 @@ const SkillGap = () => {
       setError("");
       setSelectedSkill(null);
 
+      const normalizedRole = targetRole.trim();
+
       const res = await api.get(
-        `/api/skill-gap?role=${encodeURIComponent(targetRole.trim())}`,
+        `/api/skill-gap?role=${encodeURIComponent(normalizedRole)}`,
       );
 
       setGapData(res.data.data);
+      setRole(res.data?.data?.role || normalizedRole);
     } catch (err) {
       console.error("Failed to fetch skill gap:", err);
 
@@ -273,17 +289,22 @@ const SkillGap = () => {
   };
 
   /* =======================================================
-     INITIAL LOAD
+     INITIAL / URL LOAD
   ======================================================= */
 
   useEffect(() => {
-    const targetRole = student?.career_interest || "Full Stack Developer";
+    const params = new URLSearchParams(location.search);
+
+    const urlRole = params.get("role")?.trim();
+
+    const targetRole =
+      urlRole || student?.career_interest?.trim() || "Backend Developer";
 
     setRole(targetRole);
     setInputRole(targetRole);
 
     fetchSkillGap(targetRole);
-  }, [student?.career_interest]);
+  }, [location.search, student?.career_interest]);
 
   /* =======================================================
      FETCH PERSONALIZED ROADMAP
@@ -322,8 +343,7 @@ const SkillGap = () => {
 
     if (!nextRole) return;
 
-    setRole(nextRole);
-    fetchSkillGap(nextRole);
+    navigate(`/dashboard/skill-gap?role=${encodeURIComponent(nextRole)}`);
   };
 
   /* =======================================================

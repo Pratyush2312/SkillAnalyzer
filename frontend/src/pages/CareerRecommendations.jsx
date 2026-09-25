@@ -44,10 +44,15 @@ const CareerRecommendations = () => {
 
   const topRecommendation = recommendations[0];
 
+  const goToSkillGap = (career) => {
+    navigate(`/dashboard/skill-gap?role=${encodeURIComponent(career)}`);
+  };
+
   return (
     <div className="min-h-screen bg-[var(--surface-primary)] text-[var(--text-primary)]">
       <main className="mx-auto max-w-[1500px] px-5 py-8 sm:px-8 lg:px-12 lg:py-12">
         {/* HEADER */}
+
         <header className="border-b border-[var(--border-dark)] pb-10">
           <div className="mb-5 flex items-center gap-3 text-xs uppercase tracking-[0.2em]">
             <Link
@@ -90,7 +95,7 @@ const CareerRecommendations = () => {
             <button
               onClick={() => navigate("/dashboard/edit-profile")}
               type="button"
-              className="group inline-flex w-fit items-center gap-3 rounded-full border border-[var(--border-dark)] bg-[var(--surface-secondary)] px-5 py-3 text-sm font-medium transition-all duration-300 hover:border-[var(--color-rose)] hover:bg-[var(--color-rose)] hover:text-[var(--text-dark)] cursor-pointer">
+              className="group inline-flex w-fit cursor-pointer items-center gap-3 rounded-full border border-[var(--border-dark)] bg-[var(--surface-secondary)] px-5 py-3 text-sm font-medium transition-all duration-300 hover:border-[var(--color-rose)] hover:bg-[var(--color-rose)] hover:text-[var(--text-dark)]">
               Refine your profile
               <ArrowUpRight
                 size={15}
@@ -101,20 +106,25 @@ const CareerRecommendations = () => {
         </header>
 
         {/* LOADING */}
+
         {loading && <LoadingState />}
 
         {/* ERROR */}
+
         {!loading && error && (
           <ErrorState error={error} onRetry={fetchRecommendations} />
         )}
 
         {/* EMPTY */}
+
         {!loading && !error && recommendations.length === 0 && <EmptyState />}
 
         {/* RESULTS */}
+
         {!loading && !error && recommendations.length > 0 && (
           <div>
             {/* TOP SIGNAL */}
+
             <section className="mt-8 grid gap-px overflow-hidden border border-[var(--border-dark)] bg-[var(--border-dark)] lg:grid-cols-[1.4fr_0.6fr]">
               <div className="bg-[var(--surface-secondary)] p-7 sm:p-10 lg:p-12">
                 <div className="flex items-start justify-between">
@@ -147,18 +157,18 @@ const CareerRecommendations = () => {
                   </h2>
 
                   <p className="mt-5 max-w-xl text-sm leading-7 text-[var(--text-secondary)]">
-                    Your current profile generated the strongest model signal
-                    for this career path.
+                    Your current skill profile has the strongest alignment with
+                    this career path.
                   </p>
                 </div>
 
-                <div className="mt-10 flex flex-wrap gap-3">
+                <div className="mt-10 flex flex-wrap items-center gap-3">
                   <span className="inline-flex items-center gap-2 border border-[var(--border-dark)] bg-[var(--surface-primary)] px-4 py-2.5 text-xs text-[var(--text-secondary)]">
                     <TrendingUp
                       size={14}
                       className="text-[var(--color-rose)]"
                     />
-                    {topRecommendation.probability}% model score
+                    {topRecommendation.probability}% skill match
                   </span>
 
                   <span className="inline-flex items-center gap-2 border border-[var(--border-dark)] bg-[var(--surface-primary)] px-4 py-2.5 text-xs text-[var(--text-secondary)]">
@@ -166,9 +176,18 @@ const CareerRecommendations = () => {
                     Profile based
                   </span>
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => goToSkillGap(topRecommendation.career)}
+                  className="mt-7 inline-flex items-center gap-2 bg-[var(--color-rose)] px-5 py-3 text-sm font-medium text-[var(--text-dark)] transition hover:bg-[var(--color-white)]">
+                  Analyse skill gap
+                  <ArrowUpRight size={15} />
+                </button>
               </div>
 
               {/* SCORE */}
+
               <div className="flex flex-col justify-between bg-[var(--surface-primary)] p-7 sm:p-10 lg:p-12">
                 <p className="text-xs uppercase tracking-[0.2em] text-[var(--text-muted)]">
                   Recommendation signal
@@ -181,21 +200,23 @@ const CareerRecommendations = () => {
                   </p>
 
                   <p className="mt-4 max-w-xs text-sm leading-6 text-[var(--text-secondary)]">
-                    Model-generated alignment score based on the information
-                    currently available in your profile.
+                    Skill alignment based on the capabilities currently
+                    available in your profile.
                   </p>
                 </div>
 
                 <div className="border-t border-[var(--border-dark)] pt-5">
                   <p className="text-xs leading-5 text-[var(--text-muted)]">
-                    This is a recommendation signal, not a guarantee of
-                    employment or career success.
+                    This signal reflects the current information available in
+                    your profile and is not a guarantee of employment or career
+                    success.
                   </p>
                 </div>
               </div>
             </section>
 
             {/* OTHER PATHS */}
+
             {recommendations.length > 1 && (
               <section className="mt-14">
                 <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
@@ -225,6 +246,7 @@ const CareerRecommendations = () => {
                       key={recommendation.career}
                       recommendation={recommendation}
                       index={index + 2}
+                      onSelect={goToSkillGap}
                     />
                   ))}
                 </div>
@@ -232,6 +254,7 @@ const CareerRecommendations = () => {
             )}
 
             {/* INTERPRETATION */}
+
             <section className="mt-14 grid gap-px overflow-hidden border border-[var(--border-dark)] bg-[var(--border-dark)] md:grid-cols-[0.65fr_1.35fr]">
               <div className="bg-[var(--color-rose)] p-7 text-[var(--text-dark)] sm:p-10">
                 <BriefcaseBusiness size={23} strokeWidth={1.5} />
@@ -278,6 +301,7 @@ const CareerRecommendations = () => {
             </section>
 
             {/* NEXT STEP */}
+
             <section className="mt-14 border border-[var(--border-dark)] bg-[var(--surface-secondary)] p-7 sm:p-9">
               <div className="flex flex-col justify-between gap-7 md:flex-row md:items-center">
                 <div>
@@ -295,19 +319,25 @@ const CareerRecommendations = () => {
                   </p>
                 </div>
 
-                <Link
-                  to="/dashboard/skill-gap"
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (topRecommendation?.career) {
+                      goToSkillGap(topRecommendation.career);
+                    }
+                  }}
                   className="group inline-flex w-fit shrink-0 items-center gap-3 rounded-full bg-[var(--color-rose)] px-5 py-3 text-sm font-medium text-[var(--text-dark)] transition-transform duration-300 hover:translate-x-1">
                   Explore skill gaps
                   <ArrowUpRight
                     size={16}
                     className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                   />
-                </Link>
+                </button>
               </div>
             </section>
 
             {/* FOOTER */}
+
             <div className="mt-10 flex flex-col justify-between gap-3 border-t border-[var(--border-dark)] pt-6 text-xs text-[var(--text-muted)] sm:flex-row">
               <span>RAAHVI / Career Intelligence</span>
 
@@ -324,9 +354,12 @@ const CareerRecommendations = () => {
 /* CAREER ROW */
 /* -------------------------------------------------- */
 
-function CareerRow({ recommendation, index }) {
+function CareerRow({ recommendation, index, onSelect }) {
   return (
-    <div className="group border-b border-[var(--border-dark)] bg-[var(--surface-secondary)] p-6 last:border-b-0 transition-colors duration-300 hover:bg-[var(--surface-primary)] sm:p-8">
+    <button
+      type="button"
+      onClick={() => onSelect(recommendation.career)}
+      className="group w-full cursor-pointer border-b border-[var(--border-dark)] bg-[var(--surface-secondary)] p-6 text-left transition-colors duration-300 hover:bg-[var(--surface-primary)] last:border-b-0 sm:p-8">
       <div className="flex items-center gap-5">
         <span className="hidden text-xs text-[var(--text-muted)] sm:block">
           {String(index).padStart(2, "0")}
@@ -369,7 +402,7 @@ function CareerRow({ recommendation, index }) {
           className="text-[var(--text-muted)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[var(--color-rose)]"
         />
       </div>
-    </div>
+    </button>
   );
 }
 
@@ -443,7 +476,7 @@ function ErrorState({ error, onRetry }) {
         <button
           onClick={onRetry}
           type="button"
-          className="mt-7 inline-flex items-center gap-2 rounded-full bg-[var(--color-rose)] px-5 py-3 text-sm font-medium text-[var(--text-dark)] cursor-pointer">
+          className="mt-7 inline-flex cursor-pointer items-center gap-2 rounded-full bg-[var(--color-rose)] px-5 py-3 text-sm font-medium text-[var(--text-dark)]">
           Try again
           <ArrowUpRight size={15} />
         </button>

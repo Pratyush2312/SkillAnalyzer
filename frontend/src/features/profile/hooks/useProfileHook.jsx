@@ -23,6 +23,17 @@ const useProfileHook = () => {
     return String(value || "").trim();
   };
 
+  const formatArray = (value) => {
+    if (Array.isArray(value)) {
+      return value.map((item) => String(item).trim()).filter(Boolean);
+    }
+
+    return String(value || "")
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+  };
+
   const onSubmit = async (data) => {
     try {
       const yearMap = {
@@ -34,30 +45,33 @@ const useProfileHook = () => {
       };
 
       const formattedData = {
-        ...data,
+        name: formatText(data.name),
 
         year: yearMap[data.year] || null,
 
-        technical_skills: formatText(data.technical_skills),
-        programming_languages: formatText(data.programming_languages),
-        soft_skills: formatText(data.soft_skills),
-
-        name: formatText(data.name),
         current_course: formatText(data.current_course),
+
+        technical_skills: formatArray(data.technical_skills),
+
+        programming_languages: formatArray(data.programming_languages),
+
+        soft_skills: formatArray(data.soft_skills),
+
         career_interest: formatText(data.career_interest),
+
         challenges: formatText(data.challenges),
+
         support_required: formatText(data.support_required),
+
         method: formatText(data.method),
-
-        technical_rating: Number(data.technical_rating) || 0,
-        soft_skill_rating: Number(data.soft_skill_rating) || 0,
-
-        projects: data.projects === true || data.projects === "true",
       };
+
+      console.log("PROFILE PAYLOAD:", formattedData);
 
       const res = await api.post("/api/student/profile", formattedData);
 
-      toast.success(res.data.message);
+      toast.success(res.data.message || "Profile created successfully");
+
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -72,13 +86,15 @@ const useProfileHook = () => {
   const handleLogout = async () => {
     try {
       const res = await api.post("/auth/logout");
+
       navigate("/");
+
       toast.success(res.data.message);
     } catch (error) {
       console.log(error);
+
       toast.error(
-        error.response?.data?.message ||
-          "Failed to save profile. Please try again.",
+        error.response?.data?.message || "Failed to logout. Please try again.",
       );
     }
   };
