@@ -11,25 +11,10 @@ import pandas as pd
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROCESSED_DIR = os.path.join(BASE_DIR, "processed")
 
-MODEL_PATH = os.path.join(
-    PROCESSED_DIR,
-    "career_model.joblib"
-)
-
-PREPROCESSOR_PATH = os.path.join(
-    PROCESSED_DIR,
-    "preprocessing.joblib"
-)
-
-CAREER_LABELS_PATH = os.path.join(
-    PROCESSED_DIR,
-    "career_labels.joblib"
-)
-
-FEATURE_NAMES_PATH = os.path.join(
-    PROCESSED_DIR,
-    "feature_names.joblib"
-)
+MODEL_PATH = os.path.join(PROCESSED_DIR, "career_model.joblib")
+PREPROCESSOR_PATH = os.path.join(PROCESSED_DIR, "preprocessing.joblib")
+CAREER_LABELS_PATH = os.path.join(PROCESSED_DIR, "career_labels.joblib")
+FEATURE_NAMES_PATH = os.path.join(PROCESSED_DIR, "feature_names.joblib")
 
 
 # ============================================================
@@ -48,12 +33,8 @@ feature_names = joblib.load(FEATURE_NAMES_PATH)
 
 def split_values(value):
     """
-    Convert comma-separated values into a normalized list.
-
-    Example:
-        "Python, SQL, JavaScript"
-        becomes:
-        ["python", "sql", "javascript"]
+    Convert comma-separated values or lists into
+    normalized lowercase values.
     """
 
     if value is None:
@@ -79,9 +60,6 @@ def split_values(value):
 def filter_known_values(values, encoder):
     """
     Keep only values known by the encoder.
-
-    This prevents prediction errors when a student submits
-    a skill or value that was not present during training.
     """
 
     known_values = set(encoder.classes_)
@@ -100,7 +78,15 @@ def filter_known_values(values, encoder):
 def prepare_single_student(student):
     """
     Convert one student's profile into the exact feature
-    structure expected by the trained Random Forest model.
+    structure expected by the trained model.
+
+    Current Student schema:
+
+        technical_skills
+        programming_languages
+        soft_skills
+        year
+        current_course
     """
 
     feature_blocks = []
@@ -110,7 +96,7 @@ def prepare_single_student(student):
     # --------------------------------------------------------
 
     technical_skills = split_values(
-        student.get("technical_skills", "")
+        student.get("technical_skills", [])
     )
 
     technical_skills = filter_known_values(
@@ -129,7 +115,7 @@ def prepare_single_student(student):
     # --------------------------------------------------------
 
     programming_languages = split_values(
-        student.get("programming_languages", "")
+        student.get("programming_languages", [])
     )
 
     programming_languages = filter_known_values(
@@ -148,7 +134,7 @@ def prepare_single_student(student):
     # --------------------------------------------------------
 
     soft_skills = split_values(
-        student.get("soft_skills", "")
+        student.get("soft_skills", [])
     )
 
     soft_skills = filter_known_values(
@@ -180,33 +166,14 @@ def prepare_single_student(student):
     feature_blocks.append(course_encoded)
 
     # --------------------------------------------------------
-    # NUMERIC FEATURES
+    # YEAR
     # --------------------------------------------------------
 
-    projects = student.get("projects", 0)
-
-    if isinstance(projects, str):
-        projects = (
-            1
-            if projects.strip().lower() == "yes"
-            else 0
-        )
+    year = student.get("year", np.nan)
 
     numeric_values = pd.DataFrame(
-        [[
-            student.get("year", np.nan),
-            student.get("technical_rating", np.nan),
-            student.get("soft_skill_rating", np.nan),
-            projects,
-            student.get("project_count", np.nan)
-        ]],
-        columns=[
-            "year",
-            "technical_rating",
-            "soft_skill_rating",
-            "projects",
-            "project_count"
-        ]
+        [[year]],
+        columns=["year"]
     )
 
     numeric_encoded = encoders[
@@ -221,7 +188,10 @@ def prepare_single_student(student):
 
     X = np.hstack(feature_blocks)
 
-    # Validate feature count before prediction
+    # --------------------------------------------------------
+    # FEATURE VALIDATION
+    # --------------------------------------------------------
+
     if X.shape[1] != len(feature_names):
         raise ValueError(
             f"Feature mismatch: model expects "
