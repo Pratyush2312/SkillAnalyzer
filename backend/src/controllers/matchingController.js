@@ -1,5 +1,9 @@
-import { matchStudentToRole } from "../services/matchingService.js";
+import {
+    matchStudentToRole,
+} from "../services/matchingService.js";
+
 import { getCareerRecommendations } from "../services/mlService.js";
+
 import Student from "../models/Student.js";
 
 export const getSkillMatch = async (req, res) => {
@@ -16,7 +20,10 @@ export const getSkillMatch = async (req, res) => {
 
         const normalizedRole = role.trim();
 
-        const result = await matchStudentToRole(userId, normalizedRole);
+        const result = await matchStudentToRole(
+            userId,
+            normalizedRole
+        );
 
         return res.status(200).json({
             success: true,
@@ -25,31 +32,36 @@ export const getSkillMatch = async (req, res) => {
                 matchPercentage: result.percentage,
                 matchedSkills: result.matchedSkills,
                 missingSkills: result.missingRequiredSkills,
-                optionalMissingSkills: result.missingOptionalSkills,
-                totalRequiredSkills: result.totalRequiredSkills,
-                totalMatchedSkills: result.totalMatchedSkills,
+                optionalMissingSkills:
+                    result.missingOptionalSkills,
+                totalRequiredSkills:
+                    result.totalRequiredSkills,
+                totalMatchedSkills:
+                    result.totalMatchedSkills,
                 totalMissingRequiredSkills:
                     result.totalMissingRequiredSkills,
             },
         });
     } catch (error) {
-        console.error("Skill matching error:", error);
+        console.error(
+            "Skill matching error:",
+            error
+        );
 
         return res.status(500).json({
             success: false,
-            message: error.message || "Failed to match skills",
+            message:
+                error.message ||
+                "Failed to match skills",
         });
     }
 };
 
-
-
-
 export async function generateCareerRecommendations(req, res) {
     try {
-        const studentId = req.user._id;
-
-        const student = await Student.findOne({ user: studentId });
+        const student = await Student.findOne({
+            user: req.user._id,
+        });
 
         if (!student) {
             return res.status(404).json({
@@ -58,18 +70,24 @@ export async function generateCareerRecommendations(req, res) {
             });
         }
 
-        const recommendations = await getCareerRecommendations(student);
+        const recommendations =
+            await getCareerRecommendations(student);
 
         return res.status(200).json({
             success: true,
             recommendations,
         });
     } catch (error) {
-        console.error("Career recommendation error:", error);
+        console.error(
+            "Career recommendation error:",
+            error
+        );
 
         return res.status(500).json({
             success: false,
-            message: error.message || "Failed to generate recommendations",
+            message:
+                error.message ||
+                "Failed to generate recommendations",
         });
     }
 }

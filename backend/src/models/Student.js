@@ -34,26 +34,9 @@ const studentSchema = new mongoose.Schema(
             default: [],
         },
 
-        technical_rating: {
-            type: Number,
-            min: 1,
-            max: 5,
-        },
-
         soft_skills: {
             type: [String],
             default: [],
-        },
-
-        soft_skill_rating: {
-            type: Number,
-            min: 1,
-            max: 5,
-        },
-
-        projects: {
-            type: Boolean,
-            default: false,
         },
 
         career_interest: {
@@ -75,12 +58,13 @@ const studentSchema = new mongoose.Schema(
             type: String,
             trim: true,
         },
+
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true,
             unique: true,
-        }
+        },
     },
     {
         timestamps: true,

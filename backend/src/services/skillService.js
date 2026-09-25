@@ -13,27 +13,26 @@ const SKILL_ALIASES = {
     "express.js": "express",
     "expressjs": "express",
 
-    "mongo": "mongodb",
+    mongo: "mongodb",
     "mongo db": "mongodb",
 
-    "postgres": "postgresql",
-    "postgre": "postgresql",
+    postgres: "postgresql",
+    postgre: "postgresql",
 
-    "js": "javascript",
-    "ts": "typescript",
+    js: "javascript",
+    ts: "typescript",
 
-    "py": "python",
-    "cpp": "c++",
+    py: "python",
+    cpp: "c++",
 
-    "tailwindcss": "tailwind css",
-    "tailwind": "tailwind css",
+    tailwindcss: "tailwind css",
+    tailwind: "tailwind css",
 
-    "nextjs": "next.js",
+    nextjs: "next.js",
     "next js": "next.js",
 
-    "vuejs": "vue",
+    vuejs: "vue",
 };
-
 
 export const normalizeSkillName = (skill) => {
     const normalized = String(skill || "")
@@ -73,6 +72,8 @@ export const addSkillEvidence = async ({
 }) => {
     const skill = await getOrCreateSkill(skillName);
 
+    if (!skill) return null;
+
     return SkillEvidence.create({
         user,
         skill: skill._id,
@@ -81,7 +82,68 @@ export const addSkillEvidence = async ({
         sourceId,
         description,
         proficiency,
+        observedAt: new Date(),
     });
+};
+
+/*
+ * Synchronizes skills reported directly by the student profile.
+ *
+ * Profile evidence is intentionally treated as weaker evidence
+ * than projects, assessments, certificates, and experience.
+ *
+ * Whenever the profile is updated:
+ * 1. Old profile evidence is removed.
+ * 2. Current profile skills are normalized.
+ * 3. Duplicate skills are removed.
+ * 4. Fresh profile evidence is created.
+ */
+export const syncProfileSkillEvidence = async ({
+    user,
+    technicalSkills = [],
+    programmingLanguages = [],
+    softSkills = [],
+}) => {
+    await SkillEvidence.deleteMany({
+        user,
+        type: "profile",
+        source: "student_profile",
+    });
+
+    const skills = [
+        ...technicalSkills,
+        ...programmingLanguages,
+        ...softSkills,
+    ]
+        .flatMap((skill) =>
+            String(skill || "")
+                .split(",")
+                .map((item) => item.trim())
+                .filter(Boolean)
+        )
+        .map(normalizeSkillName)
+        .filter(Boolean);
+
+    const uniqueSkills = [...new Set(skills)];
+
+    const evidence = [];
+
+    for (const skillName of uniqueSkills) {
+        const item = await addSkillEvidence({
+            user,
+            skillName,
+            type: "profile",
+            source: "student_profile",
+            description: "Student listed this skill in their profile",
+            proficiency: 50,
+        });
+
+        if (item) {
+            evidence.push(item);
+        }
+    }
+
+    return evidence;
 };
 
 export const getUserSkills = async (userId) => {
@@ -89,7 +151,6 @@ export const getUserSkills = async (userId) => {
         user: userId,
     }).populate("skill");
 };
-
 
 export const calculateSkillProficiency = (evidence) => {
     if (!evidence.length) return 0;
@@ -133,18 +194,23 @@ export const calculateSkillProficiency = (evidence) => {
             case "assessment":
                 weight = 1.4;
                 break;
+
             case "project":
                 weight = 1.3;
                 break;
+
             case "certificate":
                 weight = 1.2;
                 break;
+
             case "experience":
                 weight = 1.5;
                 break;
+
             case "course":
                 weight = 1.1;
                 break;
+
             case "profile":
                 weight = 0.7;
                 break;
@@ -154,10 +220,12 @@ export const calculateSkillProficiency = (evidence) => {
     }, 0);
 
     return Math.round(
-        Math.min(100, weighted.reduce((a, b) => a + b, 0) / totalWeight)
+        Math.min(
+            100,
+            weighted.reduce((a, b) => a + b, 0) / totalWeight
+        )
     );
 };
-
 
 export const getSkillGraph = async (userId) => {
     const evidence = await SkillEvidence.find({
@@ -167,6 +235,9 @@ export const getSkillGraph = async (userId) => {
     const grouped = {};
 
     for (const item of evidence) {
+        // Ignore invalid/orphaned evidence
+        if (!item.skill) continue;
+
         const skillId = item.skill._id.toString();
 
         if (!grouped[skillId]) {
